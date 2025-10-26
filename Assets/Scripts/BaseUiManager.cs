@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public abstract class BaseUiManager : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Base Class References")]
     [SerializeField] UiColors colors;
     [SerializeField] Canvas canvas;
     [SerializeField] Image background;
