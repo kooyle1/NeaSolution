@@ -8,7 +8,7 @@ public class BoardManagerScript : MonoBehaviour
     [Header("References")]
     [SerializeField] Button button;
     [SerializeField] Image board;
-    [SerializeField] Canvas canvas;
+    [SerializeField] BoardColors boardColors;
 
     [Header("Offsets and padding")]
     [SerializeField] int padding; //gap between cells
@@ -24,6 +24,7 @@ public class BoardManagerScript : MonoBehaviour
         foreach (Transform child in board.transform) {
             columnList.Add(child.gameObject);         
         }
+        SetBoardColors();
         CreateBoard(7,6);
 
     }
@@ -68,5 +69,11 @@ public class BoardManagerScript : MonoBehaviour
             }
         }
                
+    }
+
+    public void SetBoardColors()
+    {
+        board.color = boardColors.boardColor;
+        button.image.color = boardColors.buttonColor;
     }
 }
