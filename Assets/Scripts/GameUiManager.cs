@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using System.Collections.Generic;
 using System;
 
 
@@ -12,6 +11,12 @@ public class GameUiManager : BaseUiManager
     [SerializeField] private TMP_Text turnText;
 
     private bool isRed = true;
+
+    public override void SetColors()
+    {  
+        base.SetDropdownColors();       
+        base.SetColors();
+    }
 
     public void UpdateTurnIndicator()
     {
