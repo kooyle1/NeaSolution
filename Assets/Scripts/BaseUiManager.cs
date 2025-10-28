@@ -3,6 +3,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -57,6 +58,25 @@ public abstract class BaseUiManager : MonoBehaviour
                 image.color = colors.buttonColor;
             }
         }
+    }
+
+    public virtual void LoadGameScene()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public virtual void LoadAnalysisScene()
+    {
+        SceneManager.LoadScene(1);
+    }
+    public virtual void LoadSettingsScene()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public virtual void ExitGame()
+    {
+        ExitGame();
     }
 
 }
