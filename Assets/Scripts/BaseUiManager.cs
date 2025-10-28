@@ -15,7 +15,6 @@ public abstract class BaseUiManager : MonoBehaviour
     [SerializeField] protected Image background;
     [SerializeField] protected List<Image> dividerList;
 
-
     protected List<Button> buttonList;
     protected List<TMP_Text> textList;
 

@@ -11,33 +11,36 @@ public class GameUiManager : BaseUiManager
     [SerializeField] private TMP_Text yellowScoreText;
     [SerializeField] private TMP_Text turnText;
 
-    private bool isRed = true;
-
     public override void SetColors()
     {  
         base.SetDropdownColors();       
         base.SetColors();
     }
 
-    public void UpdateTurnIndicator()
+    /// <summary>
+    ///  Updates the text displaying who's turn it is.
+    /// </summary>
+    public void UpdateTurnIndicator(bool redPlayedTurn)
     {
-        if (isRed) {
+        if (redPlayedTurn) {
             turnText.text = "YELLOW TURN";
-            isRed = false;
             return;
         }
-
-        turnText.text = "RED TURN";
-        isRed = true;   
-        
+        turnText.text = "RED TURN";    
     }
 
+    /// <summary>
+    ///  Increment red score by 1.
+    /// </summary>
     public void UpdateRedScore()
     {
         int score = Convert.ToInt32(redScoreText.text) + 1;
         redScoreText.text = score.ToString();
     }
 
+    /// <summary>
+    ///  Increment yellow score by 1.
+    /// </summary>
     public void UpdateYellowScore()
     {
         int score = Convert.ToInt32(yellowScoreText.text) + 1;
