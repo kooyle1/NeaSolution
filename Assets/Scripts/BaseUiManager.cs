@@ -22,7 +22,6 @@ public abstract class BaseUiManager : MonoBehaviour
     {
         buttonList = canvas.GetComponentsInChildren<Button>(true).ToList();
         textList = canvas.GetComponentsInChildren<TMP_Text>(true).ToList();
-        Debug.Log(buttonList.Count);
         SetColors();
     }
 
@@ -34,7 +33,6 @@ public abstract class BaseUiManager : MonoBehaviour
             }           
             button.image.color = colors.buttonColor;
             button.GetComponent<Outline>().effectColor = colors.outlineColor;
-            button.transform.GetChild(0).GetComponent<TMP_Text>().color = colors.textColor;
         }
 
         foreach (TMP_Text text in textList) {
@@ -52,7 +50,6 @@ public abstract class BaseUiManager : MonoBehaviour
     protected virtual void SetDropdownColors()
     {
         foreach (Image image in canvas.GetComponentsInChildren<Image>(true).ToList()) {
-            Debug.Log(image.name);
             if (image.CompareTag("Dropdown")) {
                 image.color = colors.buttonColor;
             }

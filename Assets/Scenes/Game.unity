@@ -6750,7 +6750,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1453554242}
-  - component: {fileID: 1453554241}
   - component: {fileID: 1453554243}
   m_Layer: 0
   m_Name: UiManager
@@ -6759,25 +6758,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1453554241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453554240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b41672579806fad4889717fb96dad354, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 8004537993589145417, guid: 2d84d6f4ae28c4940a1ef6db1c6be3b0, type: 3}
-  board: {fileID: 2046752013}
-  boardColors: {fileID: 11400000, guid: 7a6535e99f96b7a45a24312cc855d20e, type: 2}
-  padding: 80
-  xoffset: -2
-  yoffset: 6
-  showingMovePreview: 0
 --- !u!4 &1453554242
 Transform:
   m_ObjectHideFlags: 0
@@ -10142,23 +10122,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7681097560800345220, guid: e082967561ecfda4eacd5817992820e3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7681097560800345220, guid: e082967561ecfda4eacd5817992820e3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7681097560800345220, guid: e082967561ecfda4eacd5817992820e3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7681097560800345220, guid: e082967561ecfda4eacd5817992820e3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -392.72858
+      value: 98.08002
       objectReference: {fileID: 0}
     - target: {fileID: 7681097560800345220, guid: e082967561ecfda4eacd5817992820e3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 59.471428
+      value: 59.471436
       objectReference: {fileID: 0}
     - target: {fileID: 7681097560800345220, guid: e082967561ecfda4eacd5817992820e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10636,8 +10616,8 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 968916198}
-  - {fileID: 4463058667126191411}
   - {fileID: 1417520310}
   - {fileID: 1453554242}
   - {fileID: 9200719530799572505}
   - {fileID: 7981776697320095404}
+  - {fileID: 4463058667126191411}
