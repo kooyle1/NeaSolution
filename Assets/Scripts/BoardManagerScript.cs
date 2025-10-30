@@ -21,6 +21,8 @@ public class BoardManagerScript : MonoBehaviour
     [Header("Move preview variables and references")]
     [SerializeField] private bool showingMovePreview;
 
+    private int rowCount = 6;
+    private int columnCount = 7;
     public List<GameObject> columnList { get; private set; } //list of columns under board
 
     private GraphicRaycaster uiRaycaster;
@@ -51,7 +53,7 @@ public class BoardManagerScript : MonoBehaviour
             columnList.Add(child.gameObject);
         }
         SetBoardColors();
-        CreateBoard(7, 6);
+        CreateBoard();
 
     }
 
@@ -120,12 +122,22 @@ public class BoardManagerScript : MonoBehaviour
             isRed = true;
         }
     }
+
+    public void UpdateRowCount(int index)
+    {
+        rowCount = index + 6;
+    }
+
+    public void UpdateColumnCount(int index)
+    {
+        columnCount = index + 6;
+    }
    
 
     /// <summary>
     ///  Instantiates buttons in a grid that fits inside the board. Buttons are instantiated into columns as children from top to down (so highest button is first and lowest is last). Also destroys old board buttons.
     /// </summary>
-    public void CreateBoard(int width, int height)
+    public void CreateBoard()
     {
         
         RectTransform buttonTransform = button.GetComponent<RectTransform>();
@@ -138,8 +150,8 @@ public class BoardManagerScript : MonoBehaviour
         }
 
         //Calculate and set new button diameter
-        float widthDiameter = (boardTransform.rect.width - padding) / width;
-        float heightDiameter = (boardTransform.rect.height - padding) / height;
+        float widthDiameter = (boardTransform.rect.width - padding) / columnCount;
+        float heightDiameter = (boardTransform.rect.height - padding) / rowCount;
         float buttonDiameter = Mathf.Min(widthDiameter, heightDiameter);
         buttonTransform.sizeDelta = new Vector2(buttonDiameter, buttonDiameter);
 
@@ -151,13 +163,13 @@ public class BoardManagerScript : MonoBehaviour
 
         //Instantiate columns of buttons from the start position
         Transform column;
-        for (int i = 0; i < width;  i++) {
-            startPos.x += widthDiameter + padding/width;
+        for (int i = 0; i < columnCount;  i++) {
+            startPos.x += widthDiameter + padding/columnCount;
             startPos.y = boardTransform.rect.yMax + yoffset;
             column = columnList[i].transform;  
 
-            for (int j = 0; j < height; j++) {
-                startPos.y -= heightDiameter + padding/height;
+            for (int j = 0; j < rowCount; j++) {
+                startPos.y -= heightDiameter + padding/rowCount;
                 Instantiate(button, startPos, Quaternion.identity).transform.SetParent(column, false);
             }
         }

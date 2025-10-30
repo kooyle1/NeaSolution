@@ -10,6 +10,8 @@ public class GameUiManager : BaseUiManager
     [SerializeField] private TMP_Text redScoreText;
     [SerializeField] private TMP_Text yellowScoreText;
     [SerializeField] private TMP_Text turnText;
+    [Space]
+    [SerializeField] private GameObject editBoardOptions;
 
     public override void SetColors()
     {  
@@ -45,5 +47,15 @@ public class GameUiManager : BaseUiManager
     {
         int score = Convert.ToInt32(yellowScoreText.text) + 1;
         yellowScoreText.text = score.ToString();
+    }
+
+    public void EnableEditBoardOptions()
+    {
+        editBoardOptions.SetActive(true);
+    }
+
+    public void DisableEditBoardOptions()
+    {
+        editBoardOptions.SetActive(false);
     }
 }
