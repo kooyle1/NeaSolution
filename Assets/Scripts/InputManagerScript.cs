@@ -7,8 +7,12 @@ public class InputManagerScript : MonoBehaviour
     [Header("References")]
     [SerializeField] private BoardManagerScript boardManager;
     [SerializeField] private GameUiManager gameUiManager;
+    [SerializeField] private GameLogicScript gameLogicManager;
 
     public bool isRed { get; private set; } = true;
+    private bool redWon = false;
+    private bool yellowWon = false;
+    private bool isTie = false;
 
     private Button GetBottomSlot(GameObject column)
     {
@@ -30,23 +34,42 @@ public class InputManagerScript : MonoBehaviour
 
     public void PlayMoveOnClick()
     {
+       if (yellowWon || redWon || isTie) {
+            return;
+       }
+
         GameObject column = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
         Button slot = GetBottomSlot(column);
 
         if (!slot) {
             return;
         }
-
-        gameUiManager.UpdateTurnIndicator(isRed);
+       
+        gameLogicManager.PlayMove(boardManager.columnList.IndexOf(column));
         boardManager.UpdateTurn(isRed);
+        gameUiManager.UpdateTurnIndicator(isRed);
+        if (gameLogicManager.CheckTie()) {
+            isTie = true;
+            Debug.Log("TIE");
+            return;
+        }
         if (isRed) {
             slot.image.color = boardManager.BoardColors.fullRedColor;
             isRed = false;
+            if (gameLogicManager.CheckWin()) {
+                redWon = true;
+                gameUiManager.UpdateTurnIndicator(isRed, redWon);
+            }
         }
         else {
             slot.image.color = boardManager.BoardColors.fullYellowColor;
             isRed = true;
+            if (gameLogicManager.CheckWin()) {
+                yellowWon = true;
+                gameUiManager.UpdateTurnIndicator(isRed, yellowWon);
+            }
         }
+        
     }
 
     /* For analysis screen

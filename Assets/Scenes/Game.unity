@@ -2234,6 +2234,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 591795112}
     m_Modifications:
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8661038861224441386}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1453554243}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CreateBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: DisableEditBoardOptions
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BoardManagerScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: GameUiManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448108181515986837, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5315861062871365479, guid: be1691bc0d24ffc4e8a6a66ba7da845b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3924,7 +3964,19 @@ MonoBehaviour:
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8661038861224441386}
+        m_TargetAssemblyTypeName: BoardManagerScript, Assembly-CSharp
+        m_MethodName: UpdateColumnCount
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &875314207
 MonoBehaviour:
@@ -5907,6 +5959,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 827234158544715138, guid: c408675b68e618a4bb5a701152edeb6a, type: 3}
   m_PrefabInstance: {fileID: 4598139325110433342}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1383877040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1383877041}
+  - component: {fileID: 1383877042}
+  m_Layer: 0
+  m_Name: GameLogicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1383877041
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383877040}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.991767, y: -0.46085474, z: -0.015277457}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1383877042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383877040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce9c7ae55152aae4d8a484902b7f3633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1386304990
 GameObject:
   m_ObjectHideFlags: 0
@@ -6320,6 +6416,14 @@ PrefabInstance:
     - target: {fileID: 1638450369635614681, guid: 2a5cfb6708b066547b534219c540c96e, type: 3}
       propertyPath: m_Name
       value: Cancel button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314801318937667404, guid: 2a5cfb6708b066547b534219c540c96e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1453554243}
+    - target: {fileID: 8314801318937667404, guid: 2a5cfb6708b066547b534219c540c96e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DisableEditBoardOptions
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6793,6 +6897,7 @@ MonoBehaviour:
   redScoreText: {fileID: 1945433529}
   yellowScoreText: {fileID: 180763372}
   turnText: {fileID: 702738127}
+  editBoardOptions: {fileID: 591795111}
 --- !u!1 &1469146324
 GameObject:
   m_ObjectHideFlags: 0
@@ -7188,7 +7293,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1489754623}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1453554243}
+        m_TargetAssemblyTypeName: GameUiManager, Assembly-CSharp
+        m_MethodName: EnableEditBoardOptions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1489754623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8197,7 +8314,19 @@ MonoBehaviour:
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8661038861224441386}
+        m_TargetAssemblyTypeName: BoardManagerScript, Assembly-CSharp
+        m_MethodName: UpdateRowCount
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1746983208
 MonoBehaviour:
@@ -9830,6 +9959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardManager: {fileID: 8661038861224441386}
   gameUiManager: {fileID: 1453554243}
+  gameLogicManager: {fileID: 1383877042}
 --- !u!1001 &3650885030070181774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10574,8 +10704,6 @@ MonoBehaviour:
   board: {fileID: 2046752013}
   boardColors: {fileID: 11400000, guid: 7a6535e99f96b7a45a24312cc855d20e, type: 2}
   padding: 80
-  xoffset: -2
-  yoffset: 6
   showingMovePreview: 1
 --- !u!1 &8977913527536816416
 GameObject:
@@ -10621,3 +10749,4 @@ SceneRoots:
   - {fileID: 9200719530799572505}
   - {fileID: 7981776697320095404}
   - {fileID: 4463058667126191411}
+  - {fileID: 1383877041}

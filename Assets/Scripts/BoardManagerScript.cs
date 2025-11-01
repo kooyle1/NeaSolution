@@ -15,15 +15,13 @@ public class BoardManagerScript : MonoBehaviour
 
     [Header("Offsets and padding")]
     [SerializeField] int padding; //gap between cells
-    [SerializeField] int xoffset; //horizontal offset from right board edge
-    [SerializeField] int yoffset; //vertical offset from bottom board edge
 
     [Header("Move preview variables and references")]
     [SerializeField] private bool showingMovePreview;
 
     private int rowCount = 6;
     private int columnCount = 7;
-    public List<GameObject> columnList { get; private set; } //list of columns under board
+    public List<GameObject> columnList { get; private set; }
 
     private GraphicRaycaster uiRaycaster;
     private PointerEventData pointerEventData;
@@ -34,7 +32,7 @@ public class BoardManagerScript : MonoBehaviour
     private GameObject currentObject;
     private GameObject prevObject;
 
-    private bool isRed;
+    private bool isRed = true;
 
 
     private void Update()
@@ -156,16 +154,18 @@ public class BoardManagerScript : MonoBehaviour
         buttonTransform.sizeDelta = new Vector2(buttonDiameter, buttonDiameter);
 
         //Create start position using position of top left corner of board
+
+        // Starting position (top-left corner)
         Vector2 startPos = new Vector2(
-            boardTransform.rect.xMin + xoffset - widthDiameter,
-            boardTransform.rect.yMax + yoffset
+            boardTransform.rect.xMin - widthDiameter,
+            boardTransform.rect.yMax 
         );
 
         //Instantiate columns of buttons from the start position
         Transform column;
         for (int i = 0; i < columnCount;  i++) {
             startPos.x += widthDiameter + padding/columnCount;
-            startPos.y = boardTransform.rect.yMax + yoffset;
+            startPos.y = boardTransform.rect.yMax;
             column = columnList[i].transform;  
 
             for (int j = 0; j < rowCount; j++) {
