@@ -48,17 +48,15 @@ public class InputManagerScript : MonoBehaviour
         gameLogicManager.PlayMove(boardManager.columnList.IndexOf(column));
         boardManager.UpdateTurn(isRed);
 
-        //On player's turn, assume they won before updating text indicating win or next turn
+        //On player's turn, change slot color and assume they won before updating turn indicator text
         if (isRed) {
             slot.image.color = boardManager.BoardColors.fullRedColor;
             isRed = false;
             redWon = true;
-            yellowWon = false;
         }
         else {
             slot.image.color = boardManager.BoardColors.fullYellowColor;
             isRed = true;
-            redWon = false;
             yellowWon = true;
         }
 

@@ -20,7 +20,7 @@ public class GameUiManager : BaseUiManager
     }
 
     /// <summary>
-    ///  Updates the text displaying who's turn it is.
+    ///  Updates the turn indicator text based on who just played a move.
     /// </summary>
     public void UpdateTurnIndicator(bool redPlayedTurn)
     {
@@ -32,6 +32,9 @@ public class GameUiManager : BaseUiManager
         }  
     }
 
+    /// <summary>
+    ///  Updates the turn indicator text to display who just won.
+    /// </summary>
     public void DisplayWin(bool redWon)
     {
         if (redWon) {
@@ -42,6 +45,9 @@ public class GameUiManager : BaseUiManager
         }
     }
 
+    /// <summary>
+    ///  Updates the turn indicator text to display tie.
+    /// </summary>
     public void DisplayTie()
     {
         turnText.text = "TIE!!";

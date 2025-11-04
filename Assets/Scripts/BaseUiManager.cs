@@ -18,6 +18,9 @@ public abstract class BaseUiManager : MonoBehaviour
     protected List<Button> buttonList;
     protected List<TMP_Text> textList;
 
+    /// <summary>
+    ///  Adds all buttons in canvas to buttonList and all text in canvas to textList and then calls SetColors(). Does not call SetDropdownColors().
+    /// </summary>
     protected virtual void Start()
     {
         buttonList = canvas.GetComponentsInChildren<Button>(true).ToList();
@@ -25,6 +28,9 @@ public abstract class BaseUiManager : MonoBehaviour
         SetColors();
     }
 
+    /// <summary>
+    ///  Sets colours of background and all buttons, text, dividers in canvas.
+    /// </summary>
     public virtual void SetColors()
     {
         foreach (Button button in buttonList) {
@@ -47,6 +53,9 @@ public abstract class BaseUiManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    ///  Gets all images in canvas with tag "Dropdown" and changes colour accordingly.
+    /// </summary>
     protected virtual void SetDropdownColors()
     {
         foreach (Image image in canvas.GetComponentsInChildren<Image>(true).ToList()) {

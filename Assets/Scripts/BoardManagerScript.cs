@@ -42,7 +42,7 @@ public class BoardManagerScript : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         columnList = new List<GameObject>();
         uiRaycaster = FindFirstObjectByType<GraphicRaycaster>();
@@ -109,7 +109,7 @@ public class BoardManagerScript : MonoBehaviour
 
 
     /// <summary>
-    ///  Updates the internal variable tracking the current turn.
+    ///  Updates the object's internal variable tracking the current turn.
     /// </summary>
     public void UpdateTurn(bool redPlayedTurn)
     {
@@ -176,6 +176,9 @@ public class BoardManagerScript : MonoBehaviour
                
     }
 
+    /// <summary>
+    ///  Set colors of board and board buttons.
+    /// </summary>
     public void SetBoardColors()
     {
         board.color = boardColors.boardColor;

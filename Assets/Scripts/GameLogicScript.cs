@@ -10,6 +10,9 @@ public class GameLogicScript : MonoBehaviour
     private ulong currentPosition = 0UL;
     private ulong mask = 0UL;
 
+    /// <summary>
+    ///  Updates the object's internal variable tracking the position of each player in the current game.
+    /// </summary>
     public void PlayMove(int col)
     {
         mask |= mask + (1UL << (col * (rowCount + 1)));
@@ -17,6 +20,9 @@ public class GameLogicScript : MonoBehaviour
         moveCount++;
     }
 
+    /// <summary>
+    ///  Checks if a win has ocurred in the current position.
+    /// </summary>
     public bool CheckWin() => CheckWin(currentPosition);
 
     public bool CheckTie()
@@ -27,6 +33,9 @@ public class GameLogicScript : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    ///  Checks if a win has ocurred in the given position. 
+    /// </summary>
     public bool CheckWin(ulong pos)
     {
         ulong checkMask;
