@@ -22,24 +22,29 @@ public class GameUiManager : BaseUiManager
     /// <summary>
     ///  Updates the text displaying who's turn it is.
     /// </summary>
-    public void UpdateTurnIndicator(bool redPlayedTurn, bool playerWon = false)
+    public void UpdateTurnIndicator(bool redPlayedTurn)
     {
         if (redPlayedTurn) {
-            if (playerWon) {
-                Debug.Log("fdfd");
-                turnText.text = "YELLOW WON!!";
-                return;
-            }
             turnText.text = "YELLOW TURN";
         }
         else {
-            if (playerWon) {
-                Debug.Log("fdfd");
-                turnText.text = "RED WON!!";
-                return;
-            }
             turnText.text = "RED TURN";
         }  
+    }
+
+    public void DisplayWin(bool redWon)
+    {
+        if (redWon) {
+            turnText.text = "RED WON!!";
+        }
+        else {
+            turnText.text = "YELLOW WON!!";
+        }
+    }
+
+    public void DisplayTie()
+    {
+        turnText.text = "TIE!!";
     }
 
     /// <summary>

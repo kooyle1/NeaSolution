@@ -10,8 +10,8 @@ public class InputManagerScript : MonoBehaviour
     [SerializeField] private GameLogicScript gameLogicManager;
 
     public bool isRed { get; private set; } = true;
-    private bool redWon = false;
     private bool yellowWon = false;
+    private bool redWon = false;
     private bool isTie = false;
 
     private Button GetBottomSlot(GameObject column)
@@ -34,9 +34,9 @@ public class InputManagerScript : MonoBehaviour
 
     public void PlayMoveOnClick()
     {
-       if (yellowWon || redWon || isTie) {
+        if (yellowWon || redWon || isTie) {
             return;
-       }
+        }
 
         GameObject column = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
         Button slot = GetBottomSlot(column);
@@ -47,29 +47,36 @@ public class InputManagerScript : MonoBehaviour
        
         gameLogicManager.PlayMove(boardManager.columnList.IndexOf(column));
         boardManager.UpdateTurn(isRed);
-        gameUiManager.UpdateTurnIndicator(isRed);
-        if (gameLogicManager.CheckTie()) {
-            isTie = true;
-            Debug.Log("TIE");
-            return;
-        }
+
+        //On player's turn, assume they won before updating text indicating win or next turn
         if (isRed) {
             slot.image.color = boardManager.BoardColors.fullRedColor;
             isRed = false;
-            if (gameLogicManager.CheckWin()) {
-                redWon = true;
-                gameUiManager.UpdateTurnIndicator(isRed, redWon);
-            }
+            redWon = true;
+            yellowWon = false;
         }
         else {
             slot.image.color = boardManager.BoardColors.fullYellowColor;
             isRed = true;
-            if (gameLogicManager.CheckWin()) {
-                yellowWon = true;
-                gameUiManager.UpdateTurnIndicator(isRed, yellowWon);
-            }
+            redWon = false;
+            yellowWon = true;
+        }
+
+        //Display text based on what happened after the move (win, tie, or nothing)
+        if (gameLogicManager.CheckWin()) {
+            gameUiManager.DisplayWin(redWon);
+        }
+        else if (gameLogicManager.CheckTie()) {
+            gameUiManager.DisplayTie();
+            isTie = true;
+        }
+        else {
+            gameUiManager.UpdateTurnIndicator(isRed);
+            redWon = false;
+            yellowWon = false;
         }
         
+            
     }
 
     /* For analysis screen

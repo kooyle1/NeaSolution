@@ -10,14 +10,9 @@ public class GameLogicScript : MonoBehaviour
     private ulong currentPosition = 0UL;
     private ulong mask = 0UL;
 
-    private ulong BottomMask(int col)
-    {
-        return 1UL << (col *  rowCount);
-    }
-
     public void PlayMove(int col)
     {
-        mask |= mask + BottomMask(col);
+        mask |= mask + (1UL << (col * (rowCount + 1)));
         currentPosition ^= mask;
         moveCount++;
     }
@@ -37,24 +32,32 @@ public class GameLogicScript : MonoBehaviour
         ulong checkMask;
 
         //Horizontal 
-        checkMask = pos & (pos >> (rowCount));
-        if ((checkMask & (checkMask >> (2 * (rowCount)))) != 0)
+        checkMask = pos & (pos >> (rowCount + 1));
+        if ((checkMask & (checkMask >> (2 * (rowCount + 1)))) != 0) {
+            Debug.Log("horizontal");
             return true;
+        }
 
         //Vertical
         checkMask = pos & (pos >> 1);
-        if ((checkMask & (checkMask >> 2)) != 0)
+        if ((checkMask & (checkMask >> 2)) != 0) {
+            Debug.Log("vertical");
             return true;
+        }
 
         //Diagonal (down-right/up-left)
-        checkMask = pos & (pos >> rowCount - 1);
-        if ((checkMask & (checkMask >> (2 * (rowCount - 1)))) != 0)
+        checkMask = pos & (pos >> rowCount);
+        if ((checkMask & (checkMask >> (2 * (rowCount)))) != 0) {
+            Debug.Log("down right");
             return true;
+        }
 
         //Diagonal (up-right/down-left)
-        checkMask = pos & (pos >> (rowCount + 1));
-        if ((checkMask & (checkMask >> (2 * (rowCount + 1)))) != 0)
+        checkMask = pos & (pos >> rowCount + 2);
+        if ((checkMask & (checkMask >> (2 * (rowCount + 2)))) != 0) {
+            Debug.Log("up right");
             return true;
+        }
 
         return false;
     }
