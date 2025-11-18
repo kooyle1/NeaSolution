@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5261824900789398122}
   m_Layer: 5
   m_Name: Divider
-  m_TagString: Untagged
+  m_TagString: Divider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

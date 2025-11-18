@@ -13,23 +13,38 @@ public abstract class BaseUiManager : MonoBehaviour
     [SerializeField] protected UiColors colors;
     [SerializeField] protected Canvas canvas;
     [SerializeField] protected Image background;
-    [SerializeField] protected List<Image> dividerList;
 
+    protected List<Image> dropdownList;
+    protected List<Image> dividerList;
     protected List<Button> buttonList;
     protected List<TMP_Text> textList;
 
     /// <summary>
-    ///  Adds all buttons in canvas to buttonList and all text in canvas to textList and then calls SetColors(). Does not call SetDropdownColors().
+    ///  Adds all buttons in canvas to buttonList and all text in canvas to textList and then calls SetColors().
     /// </summary>
     protected virtual void Start()
     {
         buttonList = canvas.GetComponentsInChildren<Button>(true).ToList();
         textList = canvas.GetComponentsInChildren<TMP_Text>(true).ToList();
+        dividerList = new List<Image>();
+        dropdownList = new List<Image>();
+
+        foreach (Image image in canvas.GetComponentsInChildren<Image>(true).ToList()) {
+            if (image.CompareTag("Divider")) {
+                dividerList.Add(image);
+            }
+
+            else if (image.CompareTag("Dropdown")) {
+                dropdownList.Add(image);
+            }
+        }
+
         SetColors();
+
     }
 
     /// <summary>
-    ///  Sets colours of background and all buttons, text, dividers in canvas.
+    ///  Sets colours of background and all buttons, text, dividers, and dropdowns in canvas.
     /// </summary>
     public virtual void SetColors()
     {
@@ -49,20 +64,12 @@ public abstract class BaseUiManager : MonoBehaviour
             divider.color = colors.outlineColor;
         }
 
+        foreach (Image dropdown in dropdownList) {
+            dropdown.color = colors.buttonColor;
+        }
+
         background.color = colors.backgroundColor;
 
-    }
-
-    /// <summary>
-    ///  Gets all images in canvas with tag "Dropdown" and changes colour accordingly.
-    /// </summary>
-    protected virtual void SetDropdownColors()
-    {
-        foreach (Image image in canvas.GetComponentsInChildren<Image>(true).ToList()) {
-            if (image.CompareTag("Dropdown")) {
-                image.color = colors.buttonColor;
-            }
-        }
     }
 
     public virtual void LoadGameScene()

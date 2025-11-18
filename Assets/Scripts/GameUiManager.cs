@@ -13,12 +13,6 @@ public class GameUiManager : BaseUiManager
     [Space]
     [SerializeField] private GameObject editBoardOptions;
 
-    public override void SetColors()
-    {  
-        base.SetDropdownColors();       
-        base.SetColors();
-    }
-
     /// <summary>
     ///  Updates the turn indicator text based on who just played a move.
     /// </summary>
