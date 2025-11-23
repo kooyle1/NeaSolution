@@ -1,13 +1,13 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AnalysisUiManager : BaseUiManager
+public class AnalysisUiManagerScript : BaseUiManagerScript
 {
-    [Header("References")]
+    [Header("Gameobject References")]
     [SerializeField] private Button buttonExample;
     [SerializeField] private GameObject scrollviewContent;
 
+    //Testing
     protected override void Start()
     {
         for (int i = 0; i < 10; i++) {
@@ -16,6 +16,7 @@ public class AnalysisUiManager : BaseUiManager
         base.Start();
     }
 
+    //Testing
     public void UpdateScrollView(Button button, int num)
     {
         button.name = num.ToString();

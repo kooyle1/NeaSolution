@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 [CreateAssetMenu(fileName = "BoardColors", menuName = "Scriptable Objects/BoardColors")]
 public class BoardColors : ScriptableObject

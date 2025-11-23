@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,9 +5,11 @@ using UnityEngine.UI;
 
 public class BoardManagerScript : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Gameobject References")]
     [SerializeField] Button button;
     [SerializeField] Image board;
+
+    [Header("ScriptableObject References")]
     [SerializeField] BoardColors boardColors;
 
     public BoardColors BoardColors { get { return boardColors; } }
@@ -53,6 +54,40 @@ public class BoardManagerScript : MonoBehaviour
         SetBoardColors();
         CreateBoard();
 
+    }
+
+    /// <summary>
+    ///  Fills in the colour of the played slot (assuming given slot is the played slot).
+    /// </summary>
+    public void PlayMove(GameObject column)
+    {
+        Button slot = GetBottomSlot(column);
+
+        if (isRed) {
+            slot.image.color = BoardColors.fullRedColor;
+        }
+        else {
+            slot.image.color = BoardColors.fullYellowColor;
+        }
+    }
+
+    private Button GetBottomSlot(GameObject column)
+    {
+        Color currentColor;
+        Button targetButton = null;
+        foreach (Transform child in column.transform) {
+            currentColor = child.GetComponent<Button>().image.color;
+            if (currentColor == BoardColors.fullRedColor || currentColor == BoardColors.fullYellowColor) {
+                break;
+            }
+            targetButton = child.GetComponent<Button>();
+        }
+
+        if (targetButton != null) {
+            return targetButton;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -131,7 +166,6 @@ public class BoardManagerScript : MonoBehaviour
         columnCount = index + 6;
     }
    
-
     /// <summary>
     ///  Instantiates buttons in a grid that fits inside the board. Buttons are instantiated into columns as children from top to down (so highest button is first and lowest is last). Also destroys old board buttons.
     /// </summary>

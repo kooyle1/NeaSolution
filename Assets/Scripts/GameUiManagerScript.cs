@@ -1,28 +1,26 @@
 using TMPro;
 using UnityEngine;
 using System;
-using UnityEngine.SceneManagement;
 
 
-public class GameUiManager : BaseUiManager
+public class GameUiManagerScript : BaseUiManagerScript
 {
-    [Header("Subclass References")]
+    [Header("Subclass Gameobject References")]
     [SerializeField] private TMP_Text redScoreText;
     [SerializeField] private TMP_Text yellowScoreText;
     [SerializeField] private TMP_Text turnText;
-    [Space]
-    [SerializeField] private GameObject editBoardOptions;
+    [SerializeField] private GameObject editBoardPopup;
 
     /// <summary>
-    ///  Updates the turn indicator text based on who just played a move.
+    ///  Updates the turn indicator text based on who's turn it is.
     /// </summary>
-    public void UpdateTurnIndicator(bool redPlayedTurn)
+    public void UpdateTurnIndicator(bool isRed)
     {
-        if (redPlayedTurn) {
-            turnText.text = "YELLOW TURN";
+        if (isRed) {
+            turnText.text = "RED TURN"; 
         }
         else {
-            turnText.text = "RED TURN";
+            turnText.text = "YELLOW TURN";
         }  
     }
 
@@ -67,11 +65,11 @@ public class GameUiManager : BaseUiManager
 
     public void EnableEditBoardOptions()
     {
-        editBoardOptions.SetActive(true);
+        editBoardPopup.SetActive(true);
     }
 
     public void DisableEditBoardOptions()
     {
-        editBoardOptions.SetActive(false);
+        editBoardPopup.SetActive(false);
     }
 }

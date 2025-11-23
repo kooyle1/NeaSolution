@@ -1,36 +1,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class InputManagerScript : MonoBehaviour
+public class GameInputManagerScript : MonoBehaviour
 {
-    [Header("References")]
+    [Header("MonoBehaviour Script References")]
     [SerializeField] private BoardManagerScript boardManager;
-    [SerializeField] private GameUiManager gameUiManager;
+    [SerializeField] private GameUiManagerScript gameUiManager;
     [SerializeField] private GameLogicScript gameLogicManager;
 
-    public bool isRed { get; private set; } = true;
+    private bool isRed = true;
     private bool yellowWon = false;
     private bool redWon = false;
     private bool isTie = false;
-
-    private Button GetBottomSlot(GameObject column)
-    {
-        Color currentColor;
-        Button targetButton = null;
-        foreach (Transform child in column.transform) {
-            currentColor = child.GetComponent<Button>().image.color;
-            if (currentColor == boardManager.BoardColors.fullRedColor || currentColor == boardManager.BoardColors.fullYellowColor) {
-                break;
-            }                       
-            targetButton = child.GetComponent<Button>();
-        }
-
-        if (targetButton != null) {
-            return targetButton;
-        }
-        return null;
-    }
 
     public void PlayMoveOnClick()
     {
@@ -39,23 +20,22 @@ public class InputManagerScript : MonoBehaviour
         }
 
         GameObject column = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
-        Button slot = GetBottomSlot(column);
+        int columnIndex = boardManager.columnList.IndexOf(column);
 
-        if (!slot) {
+        if (!gameLogicManager.CanPlayColumn(columnIndex)) {
             return;
-        }
-       
-        gameLogicManager.PlayMove(boardManager.columnList.IndexOf(column));
-        boardManager.UpdateTurn(isRed);
+        }     
+        gameLogicManager.PlayMove(columnIndex);
 
         //On player's turn, change slot color and assume they won before updating turn indicator text
+        boardManager.PlayMove(column);
+        boardManager.UpdateTurn(isRed);
+
         if (isRed) {
-            slot.image.color = boardManager.BoardColors.fullRedColor;
             isRed = false;
             redWon = true;
         }
         else {
-            slot.image.color = boardManager.BoardColors.fullYellowColor;
             isRed = true;
             yellowWon = true;
         }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,12 +6,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public abstract class BaseUiManager : MonoBehaviour
+public abstract class BaseUiManagerScript : MonoBehaviour
 {
-    [Header("Base Class References")]
-    [SerializeField] protected UiColors colors;
+    [Header("Base Class Gameobject References")]
     [SerializeField] protected Canvas canvas;
     [SerializeField] protected Image background;
+
+    [Header("Base Class ScriptableObject References")]
+    [SerializeField] protected UiColors colors;
 
     protected List<Image> dropdownList;
     protected List<Image> dividerList;
