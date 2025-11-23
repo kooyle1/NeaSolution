@@ -4,9 +4,42 @@ public class GameLogicScript : MonoBehaviour
 {
     private int colCount = 7;
     private int rowCount = 6;
-    private int moveCount = 0;
     private ulong currentPosition = 0UL;
     private ulong fullBoard = 0UL;
+    private ulong tieCheckMask;
+
+    private void Start()
+    {
+        UpdateTieCheckMask();
+    }
+
+    private void UpdateTieCheckMask()
+    {
+        ulong columnMask = ((1UL << rowCount) - 1) << 1;
+        ulong result = 0UL;
+
+        for (int i = 0; i < colCount; i++) {
+            result |= columnMask << (i * (rowCount + 1));
+        }
+
+        tieCheckMask = result >> 1;
+        Debug.Log(tieCheckMask);
+    }
+
+    /// <summary>
+    ///  Checks if column is full in the current board.
+    /// </summary>
+    public bool CanPlayColumn(int column) => CanPlayColumn(column, fullBoard);
+
+    /// <summary>
+    ///  Checks if a win has ocurred in the current position.
+    /// </summary>
+    public bool CheckWin() => CheckWin(currentPosition);
+
+    /// <summary>
+    ///  Checks if a tie has ocurred in the current board.
+    /// </summary>
+    public bool CheckTie() => CheckTie(fullBoard);
 
     /// <summary>
     ///  Resets board to be empty.
@@ -15,7 +48,6 @@ public class GameLogicScript : MonoBehaviour
     {
         currentPosition = 0UL;
         fullBoard = 0Ul;
-        moveCount = 0;
     }
 
     /// <summary>
@@ -25,28 +57,31 @@ public class GameLogicScript : MonoBehaviour
     {
         fullBoard |= fullBoard + (1UL << (column * (rowCount + 1)));
         currentPosition ^= fullBoard;
-        moveCount++;
     }
 
     /// <summary>
-    ///  Checks if column is full.
+    ///  Plays move in the given column on the given board and returns the new board.
     /// </summary>
-    public bool CanPlayColumn(int column)
+    public ulong PlayMove(int column, ulong board)
     {
-        return (fullBoard & ((1UL << (rowCount - 1)) << column * (rowCount + 1))) == 0;
+        board |= board + (1UL << (column * (rowCount + 1)));
+        return board;
     }
 
     /// <summary>
-    ///  Checks if a win has ocurred in the current position.
+    ///  Checks if column is full in the given board.
     /// </summary>
-    public bool CheckWin() => CheckWin(currentPosition);
-
-    public bool CheckTie()
+    public bool CanPlayColumn(int column, ulong board)
     {
-        if (moveCount == 42) {
-            return true;
-        }
-        return false;
+        return (board & ((1UL << (rowCount - 1)) << column * (rowCount + 1))) == 0;
+    }
+
+    /// <summary>
+    ///  Checks if a tie has ocurred in the given board.
+    /// </summary>
+    public bool CheckTie(ulong board)
+    {
+        return board == tieCheckMask;
     }
 
     /// <summary>

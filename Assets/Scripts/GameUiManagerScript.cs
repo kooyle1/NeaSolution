@@ -10,7 +10,6 @@ public class GameUiManagerScript : BaseUiManagerScript
     [SerializeField] private TMP_Text redScoreText;
     [SerializeField] private TMP_Text yellowScoreText;
     [SerializeField] private TMP_Text turnText;
-    [SerializeField] private GameObject editBoardPopup;
     [SerializeField] private GameObject continueButton;
 
     /// <summary>
@@ -76,23 +75,8 @@ public class GameUiManagerScript : BaseUiManagerScript
 
     }
 
-    public void EnableEditBoardOptions()
-    {
-        editBoardPopup.SetActive(true);
-    }
-
-    public void DisableEditBoardOptions()
-    {
-        editBoardPopup.SetActive(false);
-    }
-
     private void EnableContinueButton()
     {
-        continueButton.SetActive(true);
-    }
-
-    public void DisableContinueButton()
-    {
-        continueButton.SetActive(false);
+        base.EnableObject(continueButton);
     }
 }

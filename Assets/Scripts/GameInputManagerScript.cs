@@ -74,7 +74,6 @@ public class GameInputManagerScript : MonoBehaviour
     {
         StartNextRound();
         gameUiManager.ResetScores();
-        gameUiManager.DisableContinueButton();
     }
 
     /* For analysis screen

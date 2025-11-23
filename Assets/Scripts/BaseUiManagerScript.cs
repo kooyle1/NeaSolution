@@ -72,6 +72,15 @@ public abstract class BaseUiManagerScript : MonoBehaviour
         background.color = colors.backgroundColor;
 
     }
+    public void EnableObject(GameObject uiObject)
+    {
+        uiObject.SetActive(true);
+    }
+
+    public void DisableObject(GameObject uiObject)
+    {
+        uiObject.SetActive(false);
+    }
 
     public virtual void LoadGameScene()
     {
