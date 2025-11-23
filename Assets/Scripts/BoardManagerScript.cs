@@ -146,13 +146,13 @@ public class BoardManagerScript : MonoBehaviour
     /// <summary>
     ///  Updates the object's internal variable tracking the current turn.
     /// </summary>
-    public void UpdateTurn(bool redPlayedTurn)
+    public void UpdateTurn(bool isRed)
     {
-        if (redPlayedTurn) {
-            isRed = false;
+        if (isRed) {
+            this.isRed = true;
         }
         else {
-            isRed = true;
+            this.isRed = false;
         }
     }
 

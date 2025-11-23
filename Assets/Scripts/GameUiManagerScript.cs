@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 public class GameUiManagerScript : BaseUiManagerScript
@@ -10,6 +11,7 @@ public class GameUiManagerScript : BaseUiManagerScript
     [SerializeField] private TMP_Text yellowScoreText;
     [SerializeField] private TMP_Text turnText;
     [SerializeField] private GameObject editBoardPopup;
+    [SerializeField] private GameObject continueButton;
 
     /// <summary>
     ///  Updates the turn indicator text based on who's turn it is.
@@ -31,10 +33,14 @@ public class GameUiManagerScript : BaseUiManagerScript
     {
         if (redWon) {
             turnText.text = "RED WON!!";
+            UpdateRedScore();
         }
         else {
             turnText.text = "YELLOW WON!!";
+            UpdateYellowScore();
         }
+
+        EnableContinueButton();
     }
 
     /// <summary>
@@ -48,7 +54,7 @@ public class GameUiManagerScript : BaseUiManagerScript
     /// <summary>
     ///  Increment red score by 1.
     /// </summary>
-    public void UpdateRedScore()
+    private void UpdateRedScore()
     {
         int score = Convert.ToInt32(redScoreText.text) + 1;
         redScoreText.text = score.ToString();
@@ -57,10 +63,17 @@ public class GameUiManagerScript : BaseUiManagerScript
     /// <summary>
     ///  Increment yellow score by 1.
     /// </summary>
-    public void UpdateYellowScore()
+    private void UpdateYellowScore()
     {
         int score = Convert.ToInt32(yellowScoreText.text) + 1;
         yellowScoreText.text = score.ToString();
+    }
+
+    public void ResetScores()
+    {
+        redScoreText.text = 0.ToString();
+        yellowScoreText.text = 0.ToString();
+
     }
 
     public void EnableEditBoardOptions()
@@ -71,5 +84,15 @@ public class GameUiManagerScript : BaseUiManagerScript
     public void DisableEditBoardOptions()
     {
         editBoardPopup.SetActive(false);
+    }
+
+    private void EnableContinueButton()
+    {
+        continueButton.SetActive(true);
+    }
+
+    public void DisableContinueButton()
+    {
+        continueButton.SetActive(false);
     }
 }

@@ -9,6 +9,16 @@ public class GameLogicScript : MonoBehaviour
     private ulong fullBoard = 0UL;
 
     /// <summary>
+    ///  Resets board to be empty.
+    /// </summary>
+    public void ResetBoard()
+    {
+        currentPosition = 0UL;
+        fullBoard = 0Ul;
+        moveCount = 0;
+    }
+
+    /// <summary>
     ///  Updates the object's internal variable tracking the position of each player in the current game.
     /// </summary>
     public void PlayMove(int column)

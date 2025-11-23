@@ -27,10 +27,7 @@ public class GameInputManagerScript : MonoBehaviour
         }     
         gameLogicManager.PlayMove(columnIndex);
 
-        //On player's turn, change slot color and assume they won before updating turn indicator text
-        boardManager.PlayMove(column);
-        boardManager.UpdateTurn(isRed);
-
+        //Update turn and assume player won before actually checking     
         if (isRed) {
             isRed = false;
             redWon = true;
@@ -39,6 +36,9 @@ public class GameInputManagerScript : MonoBehaviour
             isRed = true;
             yellowWon = true;
         }
+
+        boardManager.PlayMove(column);
+        boardManager.UpdateTurn(isRed);
 
         //Display text based on what happened after the move (win, tie, or nothing)
         if (gameLogicManager.CheckWin()) {
@@ -55,6 +55,26 @@ public class GameInputManagerScript : MonoBehaviour
         }
         
             
+    }
+
+    public void StartNextRound()
+    {
+        isRed = true;
+        yellowWon = false;
+        redWon = false;
+        isTie = false;
+
+        gameUiManager.UpdateTurnIndicator(isRed);
+        boardManager.UpdateTurn(isRed);
+        gameLogicManager.ResetBoard();
+        boardManager.CreateBoard();
+    }
+
+    public void StartNewGame()
+    {
+        StartNextRound();
+        gameUiManager.ResetScores();
+        gameUiManager.DisableContinueButton();
     }
 
     /* For analysis screen
