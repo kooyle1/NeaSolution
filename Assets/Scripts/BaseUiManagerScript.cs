@@ -15,6 +15,9 @@ public abstract class BaseUiManagerScript : MonoBehaviour
     [Header("Base Class ScriptableObject References")]
     [SerializeField] protected UiColors colors;
 
+    [Header("MonoBehaviour Script References")]
+    [SerializeField] LoggerScript logger;
+
     protected List<Image> dropdownList;
     protected List<Image> dividerList;
     protected List<Button> buttonList;
@@ -53,32 +56,39 @@ public abstract class BaseUiManagerScript : MonoBehaviour
             if (button.GetComponent<Outline>() == null) {
                 continue;
             }           
+            logger.Log($"Setting colour of button object '{button.name}'");
             button.image.color = colors.buttonColor;
             button.GetComponent<Outline>().effectColor = colors.outlineColor;
         }
 
         foreach (TMP_Text text in textList) {
+            logger.Log($"Setting colour of text object '{text.name}'");
             text.color = colors.textColor; 
         }
 
         foreach (Image divider in dividerList) {
+            logger.Log($"Setting colour of divider object '{divider.name}'");
             divider.color = colors.outlineColor;
         }
 
         foreach (Image dropdown in dropdownList) {
+            logger.Log($"Setting colour of dropdown object '{dropdown.name}'");
             dropdown.color = colors.buttonColor;
         }
 
         background.color = colors.backgroundColor;
+        logger.Log($"Setting colour of background object '{background.name}'");
 
     }
     public void EnableObject(GameObject uiObject)
     {
+        logger.Log($"Enabled '{uiObject.name}'.");
         uiObject.SetActive(true);
     }
 
     public void DisableObject(GameObject uiObject)
     {
+        logger.Log($"Disabled '{uiObject.name}'.");
         uiObject.SetActive(false);
     }
 

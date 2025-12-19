@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using System;
-using UnityEngine.SocialPlatforms.Impl;
 
 
 public class GameUiManagerScript : BaseUiManagerScript

@@ -12,12 +12,13 @@ public class BoardManagerScript : MonoBehaviour
     [Header("ScriptableObject References")]
     [SerializeField] BoardColors boardColors;
 
+    [Header("MonoBehaviour Script References")]
+    [SerializeField] LoggerScript logger;
+
     public BoardColors BoardColors { get { return boardColors; } }
 
-    [Header("Offsets and padding")]
+    [Header("Settings")]
     [SerializeField] int padding; //gap between cells
-
-    [Header("Move preview variables and references")]
     [SerializeField] private bool showingMovePreview;
 
     private int rowCount = 6;
@@ -29,7 +30,7 @@ public class BoardManagerScript : MonoBehaviour
     private List<RaycastResult> currentUiResults = new List<RaycastResult>();
     private RaycastResult[] prevUiResults;
 
-    private Button currentlyPreviewedSlot;
+    private Button currentlyPreviewedSlot = null;
     private GameObject currentObject;
     private GameObject prevObject;
 
@@ -62,11 +63,14 @@ public class BoardManagerScript : MonoBehaviour
     public void PlayMove(GameObject column)
     {
         Button slot = GetBottomSlot(column);
+        int columnIndex = columnList.IndexOf(column);
 
         if (isRed) {
+            logger.Log($"Placed red coin in column {columnIndex}.");
             slot.image.color = BoardColors.fullRedColor;
         }
         else {
+            logger.Log($"Placed yellow coin in column {columnIndex}.");
             slot.image.color = BoardColors.fullYellowColor;
         }
     }
@@ -110,13 +114,16 @@ public class BoardManagerScript : MonoBehaviour
         //Check if mouse is hovering over new object or nothing. If it is, make sure to stop previewing the move for the last selected slot.
         if (currentObject != prevObject || currentUiResults.Count == 0) {
             var currentSlotImage = currentlyPreviewedSlot?.image;
-            if (currentSlotImage && (currentSlotImage.color == boardColors.previewRedColor || currentSlotImage.color == boardColors.previewYellowColor))
+            if (currentSlotImage && (currentSlotImage.color == boardColors.previewRedColor || currentSlotImage.color == boardColors.previewYellowColor)) {
+                logger.LogFrame("Stopped previewing a move.");
                 currentSlotImage.color = boardColors.buttonColor;
+            }             
             return;
         }
 
         //Check if mouse is hovering over a button before proceding
-        if (!currentObject.CompareTag("BoardButton")) { 
+        if (!currentObject.CompareTag("BoardButton")) {
+            logger.LogFrame("Mouse is not hovering over a board button.");
             return;
         }
 
@@ -131,7 +138,6 @@ public class BoardManagerScript : MonoBehaviour
             currentColor = child.GetComponent<Button>().image.color;
             if (currentColor == boardColors.fullRedColor || currentColor == boardColors.fullYellowColor)
                 break;
-
             targetButton = child.GetComponent<Button>();
         }
 
@@ -139,7 +145,10 @@ public class BoardManagerScript : MonoBehaviour
         if (targetButton != null) {
             currentlyPreviewedSlot = targetButton;
             currentlyPreviewedSlot.image.color = previewColor;
+            logger.LogFrame("Currently previewing a move");
+            return;
         }
+        logger.LogFrame("Attempted to preview a move in a full column");
     }
 
 

@@ -23,7 +23,6 @@ public class GameLogicScript : MonoBehaviour
         }
 
         tieCheckMask = result >> 1;
-        Debug.Log(tieCheckMask);
     }
 
     /// <summary>

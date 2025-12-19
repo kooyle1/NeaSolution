@@ -1,11 +1,10 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class SolverScript : MonoBehaviour
 {
     [Header("Monobehaviour Script References")]
     [SerializeField] private GameLogicScript gameLogic;
+    [SerializeField] private LoggerScript logger;
 
     public int AlphaBeta(ulong pos, ulong board, int depth, int alpha, int beta, bool maximizing)
     {

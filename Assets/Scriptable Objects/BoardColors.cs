@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BoardColors", menuName = "Scriptable Objects/BoardColors")]
 public class BoardColors : ScriptableObject
 {
+    [Header("Settings")]
     public Color boardColor;
     public Color buttonColor;
     public Color previewRedColor;
