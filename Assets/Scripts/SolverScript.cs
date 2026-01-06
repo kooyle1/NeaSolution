@@ -6,59 +6,69 @@ public class SolverScript : MonoBehaviour
     [SerializeField] private GameLogicScript gameLogic;
     [SerializeField] private LoggerScript logger;
 
-    //colour 1 = red(p1), colour -1 = yellow(p2)
-    public int Negamax(ulong pos, ulong board, int depth, int alpha, int beta, int color)
-    {
-        if (gameLogic.CheckTie(board)) {
-            return 0;
-        }
+    private float startTime;
+    private float timeLimit = 3f;
+    int[] moveOrder = {3, 2, 4, 1, 5, 0, 6};
 
-        if (gameLogic.CheckWin(pos)) { //Assuming solver is playing as red
-            if (color == 1) {
-                return 1;
-            }
-            return -1;
-        }
+    public int Negamax(ulong pos, ulong board, int depth, int alpha, int beta)
+    {
+        if (gameLogic.CheckTie(board)) return 0;
+
+        // If the player who just moved won, current side-to-move is losing
+        if (gameLogic.CheckWin(pos ^ board)) return -1;
+
+        if (depth == 0) return 0; // TODO heuristic
 
         int value = -10000;
-        
-        for (int i = 0; i < 7; i++) {
-            if (!gameLogic.CanPlayColumn(i, board)){
-                continue;
-            }
+
+        foreach (int i in moveOrder) {
+            if (!gameLogic.CanPlayColumn(i, board)) continue;
+
             ulong newBoard = gameLogic.PlayMove(i, board);
-            ulong newPos = pos ^ newBoard;
-            value = Mathf.Max(value, -Negamax(newPos, newBoard, depth, alpha, beta, -color));
+            ulong newPos   = pos ^ newBoard;
+
+            int score = -Negamax(newPos, newBoard, depth - 1, -beta, -alpha);
+            value = Mathf.Max(value, score);
             alpha = Mathf.Max(alpha, value);
-            if (alpha >= beta) {
-                break;
-            }
+            if (alpha >= beta) break;
         }
 
         return value;
     }
 
-    public int ReturnBestMove(ulong pos, ulong board)
+
+    public int IterativeDeepeningBestMoveTimed(ulong pos, ulong board, float timeLimitSeconds)
     {
-        int bestScore = -100;
+        startTime = Time.realtimeSinceStartup;
+        timeLimit = timeLimitSeconds;
+
         int bestMove = 0;
 
-        for (int i = 0; i < 7; i++) {
-            if (gameLogic.CanPlayColumn(i, board)) {
-                continue;
+        for (int depth = 1; depth <= 42; depth++) {
+            int bestScore = -10000;
+            int currentBestMove = bestMove;
+
+            foreach (int i in moveOrder) {
+                if (!gameLogic.CanPlayColumn(i, board)) continue;
+
+                ulong newBoard = gameLogic.PlayMove(i, board);
+                ulong newPos = pos ^ newBoard;
+
+                int score = -Negamax(newPos, newBoard, depth-1, -10000, 10000);
+                if (Time.realtimeSinceStartup - startTime >= timeLimit) return bestMove;
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    currentBestMove = i;
+                }
             }
 
-            ulong newBoard = gameLogic.PlayMove(i, board);
-            ulong newPos = pos ^ newBoard;
-            int score = Negamax(newPos, newBoard, 0,  -100, 100, 1); //Assuming we're playing red
-            if (score > bestScore) {
-                    bestScore = score;
-                    bestMove = i;
-                }
+            bestMove = currentBestMove;
         }
 
-        
         return bestMove;
-
     }
+
+
+
 }
