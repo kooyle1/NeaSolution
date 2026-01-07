@@ -25,6 +25,16 @@ public class GameLogicScript : MonoBehaviour
         tieCheckMask = result >> 1;
     }
 
+    public ulong GetPos()
+    {
+        return currentPosition;
+    }
+
+    public ulong GetBoard()
+    {
+        return fullBoard;   
+    }
+
     /// <summary>
     ///  Checks if column is full in the current board.
     /// </summary>

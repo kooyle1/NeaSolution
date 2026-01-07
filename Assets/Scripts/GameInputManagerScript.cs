@@ -7,8 +7,7 @@ public class GameInputManagerScript : MonoBehaviour
     [SerializeField] private BoardManagerScript boardManager;
     [SerializeField] private GameUiManagerScript gameUiManager;
     [SerializeField] private GameLogicScript gameLogicManager;
-
-    [Header("MonoBehaviour Script References")]
+    [SerializeField] private SolverScript solver;
     [SerializeField] LoggerScript logger;
 
     private bool isRed = true;
@@ -63,8 +62,45 @@ public class GameInputManagerScript : MonoBehaviour
             redWon = false;
             yellowWon = false;
         }
-        
-            
+                  
+    }
+
+    public void PlayAiMove()
+    {
+        int columnIndex = solver.ReturnBestMove(gameLogicManager.GetPos(), gameLogicManager.GetBoard());
+        gameLogicManager.PlayMove(columnIndex);
+        logger.Log($"AI successfully made a move in column {columnIndex}");
+
+        //Update turn and assume player won before actually checking     
+        if (isRed) {
+            isRed = false;
+            redWon = true;
+        }
+        else {
+            isRed = true;
+            yellowWon = true;
+        }
+
+        boardManager.PlayMove(boardManager.columnList[columnIndex]);
+        boardManager.UpdateTurn(isRed);
+
+        //Display text based on what happened after the move (win, tie, or nothing)
+        if (gameLogicManager.CheckWin()) {
+            logger.Log($"A win occured on this turn.");
+            gameUiManager.DisplayWin(redWon);
+        }
+        else if (gameLogicManager.CheckTie()) {
+            logger.Log("A tie occured on this turn.");
+            gameUiManager.DisplayTie();
+            isTie = true;
+        }
+        else {
+            gameUiManager.UpdateTurnIndicator(isRed);
+            logger.Log("Game did not end, now other player's turn.");
+            redWon = false;
+            yellowWon = false;
+        }
+
     }
 
     public void StartNextRound()
