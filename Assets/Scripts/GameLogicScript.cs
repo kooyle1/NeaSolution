@@ -68,6 +68,22 @@ public class GameLogicScript : MonoBehaviour
         currentPosition ^= fullBoard;
     }
 
+    public void UndoMove(int column)
+    {
+        for (int row = rowCount - 1; row >= 0; row--) {
+            ulong bit = 1UL << (column * (rowCount + 1) + row);
+            if ((fullBoard & bit) == 0) continue;
+
+            fullBoard ^= bit;                 
+            if ((currentPosition & bit) != 0) 
+                currentPosition ^= bit;
+
+            
+            currentPosition = fullBoard ^ currentPosition;
+            return;
+        }
+    }
+
     /// <summary>
     ///  Plays move in the given column on the given board and returns the new board.
     /// </summary>

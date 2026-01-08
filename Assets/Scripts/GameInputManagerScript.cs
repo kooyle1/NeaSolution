@@ -9,6 +9,7 @@ public class GameInputManagerScript : MonoBehaviour
     [SerializeField] private BoardManagerScript boardManager;
     [SerializeField] private GameUiManagerScript gameUiManager;
     [SerializeField] private GameLogicScript gameLogicManager;
+    [SerializeField] private StorageManagerScript storageManager;
     [SerializeField] private SolverScript solver;
     [SerializeField] LoggerScript logger;
 
@@ -54,7 +55,7 @@ public class GameInputManagerScript : MonoBehaviour
             yellowWon = true;
         }
 
-        boardManager.PlayMove(column);
+        boardManager.PlayMove(columnIndex);
         boardManager.UpdateTurn(isRed);
 
         //Display text based on what happened after the move (win, tie, or nothing)
@@ -98,7 +99,7 @@ public class GameInputManagerScript : MonoBehaviour
             yellowWon = true;
         }
 
-        boardManager.PlayMove(boardManager.columnList[columnIndex]);
+        boardManager.PlayMove(columnIndex);
         boardManager.UpdateTurn(isRed);
 
         //Display text based on what happened after the move (win, tie, or nothing)
@@ -140,15 +141,13 @@ public class GameInputManagerScript : MonoBehaviour
         redWon = false;
         isTie = false;
 
-        foreach (int i in movesMade) {
-            logger.Log($"{i}");
-        }
-        movesMade.Clear();
+        storageManager.AppendGame(string.Join(", ", movesMade) + $"\n{aiMode}\n{redWon}");
 
         gameUiManager.UpdateTurnIndicator(isRed);
         boardManager.UpdateTurn(isRed);
         gameLogicManager.ResetBoard();
         boardManager.CreateBoard();
+        movesMade.Clear();
     }
 
     public void StartNewGame()

@@ -60,10 +60,10 @@ public class BoardManagerScript : MonoBehaviour
     /// <summary>
     ///  Fills in the colour of the played slot (assuming given slot is the played slot).
     /// </summary>
-    public void PlayMove(GameObject column)
+    public void PlayMove(int columnIndex)
     {
+        GameObject column = columnList[columnIndex];
         Button slot = GetBottomSlot(column);
-        int columnIndex = columnList.IndexOf(column);
 
         if (isRed) {
             logger.Log($"Placed red coin in column {columnIndex}.");
@@ -75,13 +75,25 @@ public class BoardManagerScript : MonoBehaviour
         }
     }
 
-    private Button GetBottomSlot(GameObject column)
+    public void RemoveCoin(int columnIndex)
+    {
+        GameObject column = columnList[columnIndex];
+        Button slot = GetBottomSlot(column, true);
+
+        logger.Log($"Removed coin in column {columnIndex}.");
+        slot.image.color = BoardColors.buttonColor;
+    }
+
+    private Button GetBottomSlot(GameObject column, bool getFirstFilledSlot = false)
     {
         Color currentColor;
         Button targetButton = null;
         foreach (Transform child in column.transform) {
             currentColor = child.GetComponent<Button>().image.color;
             if (currentColor == BoardColors.fullRedColor || currentColor == BoardColors.fullYellowColor) {
+                if (getFirstFilledSlot) {
+                    targetButton = child.GetComponent<Button>();
+                }
                 break;
             }
             targetButton = child.GetComponent<Button>();
