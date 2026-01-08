@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,6 +18,13 @@ public class GameInputManagerScript : MonoBehaviour
     private bool yellowWon = false;
     private bool redWon = false;
     private bool isTie = false;
+
+    private List<int> movesMade;
+
+    private void Start()
+    {
+        movesMade = new List<int>();
+    }
 
     public void PlayMoveOnClick()
     {
@@ -65,6 +74,8 @@ public class GameInputManagerScript : MonoBehaviour
             yellowWon = false;
         }
 
+        movesMade.Add(columnIndex);
+
         if (aiMode) {
             PlayAiMove();
         }
@@ -107,11 +118,14 @@ public class GameInputManagerScript : MonoBehaviour
             yellowWon = false;
         }
 
+        movesMade.Add(columnIndex);
+
     }
 
     public void SetAiMode(bool inp)
     {
         aiMode = inp;
+        gameUiManager.ChangeModeText(aiMode, aiFirst);
     }
 
     public void SetAiFirst(bool inp)
@@ -125,6 +139,11 @@ public class GameInputManagerScript : MonoBehaviour
         yellowWon = false;
         redWon = false;
         isTie = false;
+
+        foreach (int i in movesMade) {
+            logger.Log($"{i}");
+        }
+        movesMade.Clear();
 
         gameUiManager.UpdateTurnIndicator(isRed);
         boardManager.UpdateTurn(isRed);

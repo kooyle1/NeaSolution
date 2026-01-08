@@ -9,6 +9,7 @@ public class GameUiManagerScript : BaseUiManagerScript
     [SerializeField] private TMP_Text redScoreText;
     [SerializeField] private TMP_Text yellowScoreText;
     [SerializeField] private TMP_Text turnText;
+    [SerializeField] private TMP_Text gamemodeText;
     [SerializeField] private GameObject continueButton;
 
     /// <summary>
@@ -22,6 +23,26 @@ public class GameUiManagerScript : BaseUiManagerScript
         else {
             turnText.text = "YELLOW TURN";
         }  
+    }
+
+    public void ChangeModeText(bool isAiMode, bool aiFirst)
+    {
+        string aiFirstText;
+
+        if (aiFirst) {
+            aiFirstText = "Ai First";
+        }
+        else {
+            aiFirstText = "Ai Second";
+        }  
+        
+
+        if (isAiMode) {
+            gamemodeText.text = "AI Mode: " + aiFirstText;
+        }
+        else {
+            gamemodeText.text = "2-Player: " + aiFirstText;
+        }
     }
 
     /// <summary>
