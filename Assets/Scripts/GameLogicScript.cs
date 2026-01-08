@@ -77,6 +77,15 @@ public class GameLogicScript : MonoBehaviour
         return board;
     }
 
+    public bool IsWinningMove(int column, ulong pos, ulong board)
+    {
+        ulong newBoard = PlayMove(column, board);
+        ulong playedBit = newBoard ^ board;
+        ulong newPos = pos | playedBit;
+        return CheckWin(newPos);
+
+    }
+
     /// <summary>
     ///  Checks if column is full in the given board.
     /// </summary>

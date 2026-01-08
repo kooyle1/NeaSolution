@@ -1699,7 +1699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f7460fbe066b24b9659cd4208e9360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLogging: 0
+  isLogging: 1
   isFrameLogging: 0
 --- !u!1 &440009471
 GameObject:
@@ -3684,7 +3684,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 762243476}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3497001087592001366}
+        m_TargetAssemblyTypeName: GameInputManagerScript, Assembly-CSharp
+        m_MethodName: PlayAiMove
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &762243476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5024,7 +5036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f7460fbe066b24b9659cd4208e9360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLogging: 1
+  isLogging: 0
   isFrameLogging: 0
 --- !u!224 &1124245262 stripped
 RectTransform:
@@ -5727,6 +5739,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 41.79}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!1 &1202626934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1202626936}
+  - component: {fileID: 1202626935}
+  m_Layer: 0
+  m_Name: Transposition Table
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1202626935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202626934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2f7530815dc8435090233384f95ab42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1202626936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202626934}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1298567119}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1205546843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6067,8 +6123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03aa81581d8a844f8c56dbeec5b7cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 0}
+  TTCapacity: 500000
+  gameLogic: {fileID: 1383877042}
   logger: {fileID: 432384573}
+  transpositionTable: {fileID: 1202626935}
 --- !u!4 &1298567119
 Transform:
   m_ObjectHideFlags: 0
@@ -6081,7 +6139,8 @@ Transform:
   m_LocalPosition: {x: -2.991767, y: -0.46085474, z: -0.015277457}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1202626936}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1319947343
@@ -10359,6 +10418,7 @@ MonoBehaviour:
   boardManager: {fileID: 8661038861224441386}
   gameUiManager: {fileID: 1453554243}
   gameLogicManager: {fileID: 1383877042}
+  solver: {fileID: 1298567118}
   logger: {fileID: 432384573}
 --- !u!1001 &3650885030070181774
 PrefabInstance:

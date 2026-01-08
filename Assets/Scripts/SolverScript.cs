@@ -5,6 +5,7 @@ public class SolverScript : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private int TTCapacity;
+    [SerializeField] private float timeLimit;
     
     [Header("Monobehaviour Script References")]
     [SerializeField] private GameLogicScript gameLogic;
@@ -12,7 +13,6 @@ public class SolverScript : MonoBehaviour
     [SerializeField] private TranspositionTableScript transpositionTable;
 
     private float startTime;
-    private float timeLimit = 2f;
     int[] moveOrder = {3, 2, 4, 1, 5, 0, 6};
 
     private void Start()
@@ -20,6 +20,7 @@ public class SolverScript : MonoBehaviour
         transpositionTable.SetSize(TTCapacity);
     }
 
+    
     public int Negamax(ulong pos, ulong board, int depth, int alpha, int beta)
     {
         if (Time.realtimeSinceStartup - startTime >= timeLimit)
@@ -29,19 +30,24 @@ public class SolverScript : MonoBehaviour
 
         if (transpositionTable.TryLookup(pos, board, out TranspositionTableScript.TTEntry entry) && entry.depth >= depth) {
             if (entry.flag == TranspositionTableScript.TTFlag.EXACT) return entry.value;
-            if (entry.flag == TranspositionTableScript.TTFlag.LOWERBOUND) alpha = Mathf.Max(alpha, entry.value);
-            else if (entry.flag == TranspositionTableScript.TTFlag.UPPERBOUND) beta = Mathf.Min(beta, entry.value);
-            if (alpha >= beta) return entry.value;
+            if (entry.flag == TranspositionTableScript.TTFlag.LOWERBOUND && entry.value >= beta) return entry.value;
+            else if (entry.flag == TranspositionTableScript.TTFlag.UPPERBOUND && entry.value <= alpha) return entry.value;
         }
 
         if (gameLogic.CheckTie(board)) return 0;
 
-        // If the player who just moved won, current side-to-move is losing
-        if (gameLogic.CheckWin(pos ^ board)) return -1000 + (42 - depth);
-
+        // Go through all moves and see if they lead to a win
+        foreach (int i in moveOrder) {
+            if (!gameLogic.CanPlayColumn(i, board)) {
+                continue;
+            }
+            if (gameLogic.IsWinningMove(i, pos, board)) {
+                return 1;
+            }
+        }
         if (depth == 0) return 0; // TODO heuristic
 
-        int value = -10000;
+        int value = -1;
 
         foreach (int i in moveOrder) {
             if (!gameLogic.CanPlayColumn(i, board)) continue;
@@ -73,7 +79,6 @@ public class SolverScript : MonoBehaviour
         return value; 
     }
 
-
     public int ReturnBestMove(ulong pos, ulong board)
     {
         transpositionTable.Clear();
@@ -83,7 +88,7 @@ public class SolverScript : MonoBehaviour
         int bestMove = 0;
 
         for (int depth = 1; depth <= 42; depth++) {
-            int bestScore = -10000;
+            int bestScore = -1;
             int currentBestMove = bestMove;
 
             foreach (int i in moveOrder) {
@@ -97,7 +102,7 @@ public class SolverScript : MonoBehaviour
                 if (gameLogic.CheckWin(newPos)) {
                     return i;
                 }
-                int score = -Negamax(newPos, newBoard, depth-1, -10000, 10000);
+                int score = -Negamax(newPos, newBoard, depth - 1, -1, 1);
                 if (Time.realtimeSinceStartup - startTime >= timeLimit) return bestMove;
 
                 if (score > bestScore) {

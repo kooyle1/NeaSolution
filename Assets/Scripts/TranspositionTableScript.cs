@@ -11,7 +11,7 @@ public class TranspositionTableScript : MonoBehaviour
     public void SetSize(int _capacity)
     {
         capacity = _capacity;
-        table = new Dictionary<(ulong, ulong), TTEntry>();
+        table = new Dictionary<(ulong, ulong), TTEntry>(capacity);
     }
 
     public void Clear()

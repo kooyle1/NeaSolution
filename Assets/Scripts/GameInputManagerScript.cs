@@ -10,6 +10,8 @@ public class GameInputManagerScript : MonoBehaviour
     [SerializeField] private SolverScript solver;
     [SerializeField] LoggerScript logger;
 
+    private bool aiMode = false;
+    private bool aiFirst = false;
     private bool isRed = true;
     private bool yellowWon = false;
     private bool redWon = false;
@@ -28,8 +30,8 @@ public class GameInputManagerScript : MonoBehaviour
         if (!gameLogicManager.CanPlayColumn(columnIndex)) {
             logger.Log("Player tried moving in a full column.");
             return;
-        }   
-        
+        }
+
         gameLogicManager.PlayMove(columnIndex);
         logger.Log($"Player successfully made a move in column {columnIndex}");
 
@@ -61,6 +63,10 @@ public class GameInputManagerScript : MonoBehaviour
             logger.Log("Game did not end, now other player's turn.");
             redWon = false;
             yellowWon = false;
+        }
+
+        if (aiMode) {
+            PlayAiMove();
         }
                   
     }
@@ -103,6 +109,16 @@ public class GameInputManagerScript : MonoBehaviour
 
     }
 
+    public void SetAiMode(bool inp)
+    {
+        aiMode = inp;
+    }
+
+    public void SetAiFirst(bool inp)
+    {
+        aiFirst = inp;
+    }
+
     public void StartNextRound()
     {
         isRed = true;
@@ -120,6 +136,10 @@ public class GameInputManagerScript : MonoBehaviour
     {
         StartNextRound();
         gameUiManager.ResetScores();
+
+        if (aiFirst && aiMode) {
+            PlayAiMove();
+        }
     }
 
     /* For analysis screen
