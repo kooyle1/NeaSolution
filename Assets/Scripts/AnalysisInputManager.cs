@@ -1,6 +1,3 @@
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -39,6 +36,7 @@ public class AnalysisInputManager : MonoBehaviour
         if (index >= currentGame.Length - 1) {
             return;
         }
+        AudioManager.instance.PlayMoveSFX();
         index++;
         int columnIndex = currentGame[index];
         boardManager.PlayMove(columnIndex);
@@ -52,7 +50,8 @@ public class AnalysisInputManager : MonoBehaviour
     {
         if (index < 0) {
             return;
-        }    
+        }
+        AudioManager.instance.PlayMoveSFX();
         int columnIndex = currentGame[index];
         boardManager.RemoveCoin(columnIndex);
         gameLogic.UndoMove(columnIndex);

@@ -16,7 +16,7 @@ public abstract class BaseUiManagerScript : MonoBehaviour
     [SerializeField] protected UiColors colors;
 
     [Header("MonoBehaviour Script References")]
-    [SerializeField] LoggerScript logger;
+    [SerializeField] protected LoggerScript logger;
 
     protected List<Image> dropdownList;
     protected List<Image> dividerList;

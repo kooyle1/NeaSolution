@@ -21,13 +21,15 @@ public class AnalysisUiManagerScript : BaseUiManagerScript
     [SerializeField] private TMP_Text turnText;
 
 
-    public List<TMP_Text> poop;
+    public List<TMP_Text> buttonTextList;
     public List<int[]> pastGamesList;
 
     //Testing
     protected override void Start()
     {
-        poop = buttonExample.GetComponentsInChildren<TMP_Text>(true).ToList();
+        buttonTextList = buttonExample.GetComponentsInChildren<TMP_Text>(true).ToList();
+        pastGamesList = new List<int[]>();
+        /*
         pastGamesList = new List<int[]>();
 
         string[] pastGamesInfo = storageManager.GetAllPastGames();
@@ -39,24 +41,22 @@ public class AnalysisUiManagerScript : BaseUiManagerScript
             switch (i) {
                 case 0:
                     pastGamesList.Add(Array.ConvertAll(pastGamesInfo[index].Split(", "), s => int.Parse(s)));
-                    Debug.Log(string.Join(", ", Array.ConvertAll(pastGamesInfo[index].Split(", "), s => int.Parse(s))));
-                    Debug.Log(string.Join(", ", pastGamesList));
-                    poop[i].text = (index/3).ToString();
+                    buttonTextList[i].text = (index/3).ToString();
                     break;
                 case 1:
                     if (pastGamesInfo[index] == "False") {
-                        poop[i].text = "Ai mode";
+                        buttonTextList[i].text = "2-player mode";
                     }
                     else {
-                        poop[i].text = "2-player mode";
+                        buttonTextList[i].text = "Ai Mode";
                     }
                     break;
                 case 2:
                     if (pastGamesInfo[index] == "False") {
-                        poop[i].text = "Player 2 won";
+                        buttonTextList[i].text = "Player 2 won";
                     }
                     else {
-                        poop[i].text = "Player 1 won";
+                        buttonTextList[i].text = "Player 1 won";
                     }
                     break;
 
@@ -66,6 +66,35 @@ public class AnalysisUiManagerScript : BaseUiManagerScript
             if (i == 0) {
                 UpdateScrollView(buttonExample, (index-1)/3);
             }
+        }
+        */
+
+        List<Game> gamesInfoList = storageManager.LoadPastGames();
+        gamesInfoList.Reverse();
+
+        int index = gamesInfoList.Count - 1;
+        foreach (Game game in gamesInfoList) {
+            buttonTextList[0].text = (index + 1).ToString();
+
+            if (game.aiFirst) {
+                buttonTextList[1].text = "AI mode";            
+            }
+            else {
+                buttonTextList[1].text = "2-player mode";
+            }
+
+            if (game.redWon) {
+                buttonTextList[2].text = "Player 1 won";
+            }
+            else {
+                buttonTextList[2].text = "Player 2 won";
+            }
+
+            pastGamesList.Add(game.moveList.ToArray());
+
+            UpdateScrollView(buttonExample, index);
+            index--;
+
         }
             
         base.Start();
@@ -92,7 +121,6 @@ public class AnalysisUiManagerScript : BaseUiManagerScript
         return pastGamesList[index];
     }
 
-    //Testing
     private void UpdateScrollView(Button button, int num)
     {
         button.name = num.ToString();

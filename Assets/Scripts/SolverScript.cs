@@ -1,4 +1,6 @@
 using JetBrains.Annotations;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SolverScript : MonoBehaviour
@@ -10,7 +12,8 @@ public class SolverScript : MonoBehaviour
     [Header("Monobehaviour Script References")]
     [SerializeField] private GameLogicScript gameLogic;
     [SerializeField] private LoggerScript logger;
-    [SerializeField] private TranspositionTableScript transpositionTable;
+
+    private TranspositionTable transpositionTable = new TranspositionTable();
 
     private float startTime;
     int[] moveOrder = {3, 2, 4, 1, 5, 0, 6};
@@ -19,19 +22,23 @@ public class SolverScript : MonoBehaviour
     {
         transpositionTable.SetSize(TTCapacity);
     }
-
-    
     public int Negamax(ulong pos, ulong board, int depth, int alpha, int beta)
     {
         if (Time.realtimeSinceStartup - startTime >= timeLimit)
-            return 0; // TODO heuristic
+            return 0; 
 
         int alphaOrig = alpha;
 
-        if (transpositionTable.TryLookup(pos, board, out TranspositionTableScript.TTEntry entry) && entry.depth >= depth) {
-            if (entry.flag == TranspositionTableScript.TTFlag.EXACT) return entry.value;
-            if (entry.flag == TranspositionTableScript.TTFlag.LOWERBOUND && entry.value >= beta) return entry.value;
-            else if (entry.flag == TranspositionTableScript.TTFlag.UPPERBOUND && entry.value <= alpha) return entry.value;
+        if (transpositionTable.TryLookup(pos, board, out TranspositionTable.TTEntry entry) && entry.depth >= depth) {
+            if (entry.flag == TranspositionTable.TTFlag.EXACT) {
+                return entry.value;
+            }
+            if (entry.flag == TranspositionTable.TTFlag.LOWERBOUND && entry.value >= beta) {
+                return entry.value;
+            }
+            else if (entry.flag == TranspositionTable.TTFlag.UPPERBOUND && entry.value <= alpha) {
+                return entry.value;
+            }
         }
 
         if (gameLogic.CheckTie(board)) return 0;
@@ -45,7 +52,7 @@ public class SolverScript : MonoBehaviour
                 return 1;
             }
         }
-        if (depth == 0) return 0; // TODO heuristic
+        if (depth == 0) return 0; 
 
         int value = -1;
 
@@ -61,17 +68,17 @@ public class SolverScript : MonoBehaviour
             if (alpha >= beta) break;
         }
 
-        TranspositionTableScript.TTEntry newEntry;
+        TranspositionTable.TTEntry newEntry;
 
         newEntry.value = value;
         if (value <= alphaOrig) {
-            newEntry.flag = TranspositionTableScript.TTFlag.UPPERBOUND;
+            newEntry.flag = TranspositionTable.TTFlag.UPPERBOUND;
         }
         else if (value >= beta) {
-            newEntry.flag = TranspositionTableScript.TTFlag.LOWERBOUND;
+            newEntry.flag = TranspositionTable.TTFlag.LOWERBOUND;
         }
         else {
-            newEntry.flag = TranspositionTableScript.TTFlag.EXACT;
+            newEntry.flag = TranspositionTable.TTFlag.EXACT;
         }
         newEntry.depth = depth;
         transpositionTable.Store(pos, board, newEntry); 
@@ -93,7 +100,9 @@ public class SolverScript : MonoBehaviour
 
             foreach (int i in moveOrder) {
                 logger.Log("hi");
-                if (!gameLogic.CanPlayColumn(i, board)) continue;
+                if (!gameLogic.CanPlayColumn(i, board)) {
+                    continue;
+                }
 
 
                 ulong newBoard = gameLogic.PlayMove(i, board);
@@ -120,3 +129,51 @@ public class SolverScript : MonoBehaviour
 
 
 }
+public class TranspositionTable
+{
+
+    private Dictionary<(ulong, ulong), TTEntry> table;
+    private int capacity;
+
+    public void SetSize(int _capacity)
+    {
+        capacity = _capacity;
+        table = new Dictionary<(ulong, ulong), TTEntry>(capacity);
+    }
+
+    public void Clear()
+    {
+        table.Clear();
+    }
+
+    public enum TTFlag
+    {
+        EXACT,
+        UPPERBOUND,
+        LOWERBOUND
+    }
+
+    public struct TTEntry
+    {
+        public int value;
+        public int depth;
+        public TTFlag flag;
+    }
+
+    public void Store(ulong pos, ulong board, TTEntry entry)
+    {
+        if (table.Count >= capacity) {
+            var oldestKey = table.Keys.First();
+            table.Remove(oldestKey);
+        }
+
+        table[(pos, board)] = entry;
+    }
+
+    public bool TryLookup(ulong pos, ulong board, out TTEntry entry)
+    {
+        return table.TryGetValue((pos, board), out entry);
+    }
+
+}
+

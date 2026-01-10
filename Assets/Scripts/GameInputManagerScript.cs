@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -42,6 +43,7 @@ public class GameInputManagerScript : MonoBehaviour
             return;
         }
 
+        AudioManager.instance.PlayMoveSFX();
         gameLogicManager.PlayMove(columnIndex);
         logger.Log($"Player successfully made a move in column {columnIndex}");
 
@@ -78,13 +80,15 @@ public class GameInputManagerScript : MonoBehaviour
         movesMade.Add(columnIndex);
 
         if (aiMode) {
-            PlayAiMove();
+            StartCoroutine(PlayAiMove());
         }
                   
     }
 
-    public void PlayAiMove()
+    private IEnumerator PlayAiMove()
     {
+        yield return new WaitForSeconds(0.01f);
+        
         int columnIndex = solver.ReturnBestMove(gameLogicManager.GetPos(), gameLogicManager.GetBoard());
         gameLogicManager.PlayMove(columnIndex);
         logger.Log($"AI successfully made a move in column {columnIndex}");
@@ -136,12 +140,19 @@ public class GameInputManagerScript : MonoBehaviour
 
     public void StartNextRound()
     {
+        Game playedGame = new Game
+        {
+            moveList = movesMade,
+            aiFirst = aiFirst,
+            redWon = redWon
+        };
+        
+        storageManager.SaveGame(playedGame);
+
         isRed = true;
         yellowWon = false;
         redWon = false;
         isTie = false;
-
-        storageManager.AppendGame(string.Join(", ", movesMade) + $"\n{aiMode}\n{redWon}");
 
         gameUiManager.UpdateTurnIndicator(isRed);
         boardManager.UpdateTurn(isRed);
@@ -156,7 +167,7 @@ public class GameInputManagerScript : MonoBehaviour
         gameUiManager.ResetScores();
 
         if (aiFirst && aiMode) {
-            PlayAiMove();
+            StartCoroutine(PlayAiMove());
         }
     }
 

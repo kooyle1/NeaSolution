@@ -1,26 +1,56 @@
+using NUnit.Framework;
 using System.IO;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public class StorageManagerScript : MonoBehaviour
 {
+    private PastGames pastGames = new PastGames();
+    private Settings settings = new Settings();
+    
     private string pastGamesFile;
+    private string settingsFile;
 
     private void Awake()
     {
-        pastGamesFile = Application.dataPath + "/Data/PastGames.txt";
+        pastGamesFile = Application.persistentDataPath + "/PastGames.json";
+        settingsFile = Application.persistentDataPath + "/Settings.json";
+
     }
 
-    public void AppendGame(string gameInfo)
-    {
-        if (!File.Exists(pastGamesFile)) {
-            File.WriteAllText(pastGamesFile, gameInfo);
-        }
+    public void ChangeVolume(float vol) {
+        settings.volume = vol;
+        SaveSettings();
+    }
 
-        else {
-            using (var writer = new StreamWriter(pastGamesFile, true)) {
-                writer.WriteLine(gameInfo);
-            }
-        }
+    public Settings LoadSettings()
+    {
+        string settingsData = File.ReadAllText(settingsFile);
+
+        return JsonUtility.FromJson<Settings>(settingsData);
+    }
+
+    private void SaveSettings()
+    {
+        string settingsData = JsonUtility.ToJson(settings);
+        File.WriteAllText(settingsFile, settingsData);
+    }
+
+    public void SaveGame(Game game)
+    {
+        pastGames.gameList = LoadPastGames();
+        pastGames.gameList.Add(game);
+        string pastGamesData = JsonUtility.ToJson(pastGames);
+        File.WriteAllText(pastGamesFile, pastGamesData);
+    }
+
+    public List<Game> LoadPastGames()
+    {
+        string pastGamesData = File.ReadAllText(pastGamesFile);
+        List<Game> games = JsonUtility.FromJson<PastGames>(pastGamesData).gameList;
+        return games;
+
     }
 
     public string[] GetAllPastGames()
@@ -28,4 +58,21 @@ public class StorageManagerScript : MonoBehaviour
         return File.ReadAllLines(pastGamesFile);
 
     }
+}
+
+public class PastGames
+{
+    public List<Game> gameList = new List<Game>();
+}
+
+public class Game
+{
+    public List<int> moveList;
+    public bool aiFirst;
+    public bool redWon;
+}
+
+public class Settings
+{
+    public float volume;
 }
