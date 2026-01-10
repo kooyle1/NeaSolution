@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -14,8 +15,9 @@ public class SolverScript : MonoBehaviour
     [SerializeField] private LoggerScript logger;
 
     private TranspositionTable transpositionTable = new TranspositionTable();
+    private Stopwatch time = Stopwatch.StartNew();
 
-    private float startTime;
+    private double startTime;
     int[] moveOrder = {3, 2, 4, 1, 5, 0, 6};
 
     private void Start()
@@ -24,7 +26,7 @@ public class SolverScript : MonoBehaviour
     }
     public int Negamax(ulong pos, ulong board, int depth, int alpha, int beta)
     {
-        if (Time.realtimeSinceStartup - startTime >= timeLimit)
+        if (time.Elapsed.TotalSeconds - startTime >= timeLimit)
             return 0; 
 
         int alphaOrig = alpha;
@@ -90,7 +92,7 @@ public class SolverScript : MonoBehaviour
     {
         transpositionTable.Clear();
         
-        startTime = Time.realtimeSinceStartup;
+        startTime = time.Elapsed.TotalSeconds;
 
         int bestMove = 0;
 
@@ -99,7 +101,6 @@ public class SolverScript : MonoBehaviour
             int currentBestMove = bestMove;
 
             foreach (int i in moveOrder) {
-                logger.Log("hi");
                 if (!gameLogic.CanPlayColumn(i, board)) {
                     continue;
                 }
@@ -112,7 +113,7 @@ public class SolverScript : MonoBehaviour
                     return i;
                 }
                 int score = -Negamax(newPos, newBoard, depth - 1, -1, 1);
-                if (Time.realtimeSinceStartup - startTime >= timeLimit) return bestMove;
+                if (time.Elapsed.TotalSeconds - startTime >= timeLimit) return bestMove;
 
                 if (score > bestScore) {
                     bestScore = score;

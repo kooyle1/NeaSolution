@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -20,6 +21,8 @@ public class GameInputManagerScript : MonoBehaviour
     private bool yellowWon = false;
     private bool redWon = false;
     private bool isTie = false;
+    private Task<int> aiTask;
+    private bool aiThinking = false;
 
     private List<int> movesMade;
 
@@ -28,16 +31,37 @@ public class GameInputManagerScript : MonoBehaviour
         movesMade = new List<int>();
     }
 
+    private void Update()
+    {
+        if (!aiThinking || aiTask == null) return;
+        if (!aiTask.IsCompleted) return;
+
+        int move = aiTask.Result;
+        aiTask = null;
+        aiThinking = false;
+
+        ApplyMove(move);
+    }
+
     public void PlayMoveOnClick()
     {
-        if (yellowWon || redWon || isTie) {
-            logger.Log("Player tried moving after the round ended.");
+        if (yellowWon || redWon || isTie || aiThinking) {
+            logger.Log("Player tried moving after the round ended or while AI was thinking.");
             return;
         }
 
         GameObject column = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
-        int columnIndex = boardManager.columnList.IndexOf(column);
+        int columnIndex = boardManager.columnList.IndexOf(column);    
+        ApplyMove(columnIndex);
 
+        if (!(yellowWon || redWon || isTie) && aiMode) {
+            StartCoroutine(PlayAiMove());
+        }
+                  
+    }
+
+    private void ApplyMove(int columnIndex)
+    {
         if (!gameLogicManager.CanPlayColumn(columnIndex)) {
             logger.Log("Player tried moving in a full column.");
             return;
@@ -45,7 +69,7 @@ public class GameInputManagerScript : MonoBehaviour
 
         AudioManager.instance.PlayMoveSFX();
         gameLogicManager.PlayMove(columnIndex);
-        logger.Log($"Player successfully made a move in column {columnIndex}");
+        logger.Log($"Successfully made a move in column {columnIndex}");
 
         //Update turn and assume player won before actually checking     
         if (isRed) {
@@ -59,19 +83,16 @@ public class GameInputManagerScript : MonoBehaviour
 
         boardManager.PlayMove(columnIndex);
         boardManager.UpdateTurn(isRed);
-        movesMade.Add(columnIndex);
 
         //Display text based on what happened after the move (win, tie, or nothing)
         if (gameLogicManager.CheckWin()) {
             logger.Log($"A win occured on this turn.");
             gameUiManager.DisplayWin(redWon);
-            return;
         }
         else if (gameLogicManager.CheckTie()) {
             logger.Log("A tie occured on this turn.");
             gameUiManager.DisplayTie();
             isTie = true;
-            return;
         }
         else {
             gameUiManager.UpdateTurnIndicator(isRed);
@@ -80,52 +101,26 @@ public class GameInputManagerScript : MonoBehaviour
             yellowWon = false;
         }
 
-
-        if (aiMode) {
-            StartCoroutine(PlayAiMove());
-        }
-                  
+        movesMade.Add(columnIndex);
     }
 
     private IEnumerator PlayAiMove()
     {
         yield return new WaitForSeconds(0.01f);
-        
-        int columnIndex = solver.ReturnBestMove(gameLogicManager.GetPos(), gameLogicManager.GetBoard());
-        gameLogicManager.PlayMove(columnIndex);
-        logger.Log($"AI successfully made a move in column {columnIndex}");
 
-        //Update turn and assume player won before actually checking     
-        if (isRed) {
-            isRed = false;
-            redWon = true;
-        }
-        else {
-            isRed = true;
-            yellowWon = true;
+        if (aiThinking) {
+            yield return null;
         }
 
-        boardManager.PlayMove(columnIndex);
-        boardManager.UpdateTurn(isRed);
+        aiThinking = true;
 
-        //Display text based on what happened after the move (win, tie, or nothing)
-        if (gameLogicManager.CheckWin()) {
-            logger.Log($"A win occured on this turn.");
-            gameUiManager.DisplayWin(redWon);
-        }
-        else if (gameLogicManager.CheckTie()) {
-            logger.Log("A tie occured on this turn.");
-            gameUiManager.DisplayTie();
-            isTie = true;
-        }
-        else {
-            gameUiManager.UpdateTurnIndicator(isRed);
-            logger.Log("Game did not end, now other player's turn.");
-            redWon = false;
-            yellowWon = false;
-        }
+        ulong pos = gameLogicManager.GetPos();
+        ulong board = gameLogicManager.GetBoard();
 
-        movesMade.Add(columnIndex);
+        aiTask = Task.Run(() =>
+        {
+            return solver.ReturnBestMove(pos, board);
+        });
 
     }
 
