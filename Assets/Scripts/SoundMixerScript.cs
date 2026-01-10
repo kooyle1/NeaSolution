@@ -10,7 +10,7 @@ public class SoundMixerScript : MonoBehaviour
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private StorageManagerScript storageManager;
 
-    private void Awake()
+    private void Start()
     {
         Load();
     }
@@ -23,6 +23,12 @@ public class SoundMixerScript : MonoBehaviour
 
     private void Load()
     {
-        volumeSlider.value = storageManager.LoadSettings().volume;
+        float volume = storageManager.LoadSettings().volume; 
+        if (volumeSlider != null) {
+            volumeSlider.value = volume;
+
+        }
+
+        audioMixer.SetFloat("Master", volume);
     }
 }

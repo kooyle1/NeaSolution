@@ -59,16 +59,19 @@ public class GameInputManagerScript : MonoBehaviour
 
         boardManager.PlayMove(columnIndex);
         boardManager.UpdateTurn(isRed);
+        movesMade.Add(columnIndex);
 
         //Display text based on what happened after the move (win, tie, or nothing)
         if (gameLogicManager.CheckWin()) {
             logger.Log($"A win occured on this turn.");
             gameUiManager.DisplayWin(redWon);
+            return;
         }
         else if (gameLogicManager.CheckTie()) {
             logger.Log("A tie occured on this turn.");
             gameUiManager.DisplayTie();
             isTie = true;
+            return;
         }
         else {
             gameUiManager.UpdateTurnIndicator(isRed);
@@ -77,7 +80,6 @@ public class GameInputManagerScript : MonoBehaviour
             yellowWon = false;
         }
 
-        movesMade.Add(columnIndex);
 
         if (aiMode) {
             StartCoroutine(PlayAiMove());
@@ -159,6 +161,10 @@ public class GameInputManagerScript : MonoBehaviour
         gameLogicManager.ResetBoard();
         boardManager.CreateBoard();
         movesMade.Clear();
+
+        if (aiFirst && aiMode) {
+            StartCoroutine(PlayAiMove());
+        }
     }
 
     public void StartNewGame()
@@ -166,9 +172,6 @@ public class GameInputManagerScript : MonoBehaviour
         StartNextRound();
         gameUiManager.ResetScores();
 
-        if (aiFirst && aiMode) {
-            StartCoroutine(PlayAiMove());
-        }
     }
 
     /* For analysis screen

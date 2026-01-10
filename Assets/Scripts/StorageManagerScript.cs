@@ -53,18 +53,15 @@ public class StorageManagerScript : MonoBehaviour
 
     }
 
-    public string[] GetAllPastGames()
-    {
-        return File.ReadAllLines(pastGamesFile);
-
-    }
 }
 
+[System.Serializable]
 public class PastGames
 {
     public List<Game> gameList = new List<Game>();
 }
 
+[System.Serializable]
 public class Game
 {
     public List<int> moveList;
@@ -72,6 +69,7 @@ public class Game
     public bool redWon;
 }
 
+[System.Serializable]
 public class Settings
 {
     public float volume;
