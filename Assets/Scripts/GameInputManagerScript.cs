@@ -137,14 +137,15 @@ public class GameInputManagerScript : MonoBehaviour
 
     public void StartNextRound()
     {
-        Game playedGame = new Game
-        {
-            moveList = movesMade,
-            aiFirst = aiFirst,
-            redWon = redWon
-        };
-        
-        storageManager.SaveGame(playedGame);
+        if (redWon || yellowWon || isTie) {
+            Game playedGame = new Game
+            {
+                moveList = movesMade,
+                aiFirst = aiFirst,
+                redWon = redWon
+            };
+            storageManager.SaveGame(playedGame);
+        }
 
         isRed = true;
         yellowWon = false;
