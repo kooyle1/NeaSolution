@@ -12,9 +12,6 @@ public abstract class BaseUiManagerScript : MonoBehaviour
     [SerializeField] protected Canvas canvas;
     [SerializeField] protected Image background;
 
-    [Header("Base Class ScriptableObject References")]
-    [SerializeField] protected UiColors colors;
-
     [Header("MonoBehaviour Script References")]
     [SerializeField] protected LoggerScript logger;
 
@@ -57,26 +54,26 @@ public abstract class BaseUiManagerScript : MonoBehaviour
                 continue;
             }           
             logger.Log($"Setting colour of button object '{button.name}'");
-            button.image.color = colors.buttonColor;
-            button.GetComponent<Outline>().effectColor = colors.outlineColor;
+            button.image.color = StaticData.settings.uiColors.buttonColor;
+            button.GetComponent<Outline>().effectColor = StaticData.settings.uiColors.outlineColor;
         }
 
         foreach (TMP_Text text in textList) {
             logger.Log($"Setting colour of text object '{text.name}'");
-            text.color = colors.textColor; 
+            text.color = StaticData.settings.uiColors.textColor; 
         }
 
         foreach (Image divider in dividerList) {
             logger.Log($"Setting colour of divider object '{divider.name}'");
-            divider.color = colors.outlineColor;
+            divider.color = StaticData.settings.uiColors.outlineColor;
         }
 
         foreach (Image dropdown in dropdownList) {
             logger.Log($"Setting colour of dropdown object '{dropdown.name}'");
-            dropdown.color = colors.buttonColor;
+            dropdown.color = StaticData.settings.uiColors.buttonColor;
         }
 
-        background.color = colors.backgroundColor;
+        background.color = StaticData.settings.uiColors.backgroundColor;
         logger.Log($"Setting colour of background object '{background.name}'");
 
     }

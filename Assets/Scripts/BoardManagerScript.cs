@@ -11,13 +11,10 @@ public class BoardManagerScript : MonoBehaviour
     [SerializeField] Sprite triangleSprite;
     [SerializeField] Sprite squareSprite;
 
-    [Header("ScriptableObject References")]
-    [SerializeField] BoardColors defaultBoardColours;
 
     [Header("MonoBehaviour Script References")]
     [SerializeField] LoggerScript logger;
 
-    public BoardColors BoardColors { get { return defaultBoardColours; } }
 
     [Header("Settings")]
     [SerializeField] int padding; //gap between cells
@@ -67,16 +64,17 @@ public class BoardManagerScript : MonoBehaviour
 
         if (StaticData.redTurn) {
             logger.Log($"Placed red coin in column {columnIndex}.");
-            slot.image.color = BoardColors.fullRedColor;
-            slot.image.sprite = squareSprite;
-            logger.Log($"Set squaer");
+            slot.image.color = StaticData.settings.boardColors.fullRedColor;
+            if (StaticData.settings.symbolMode) {
+                slot.image.sprite = squareSprite;
+            }    
         }
         else {
             logger.Log($"Placed yellow coin in column {columnIndex}.");
-            slot.image.color = BoardColors.fullYellowColor;
-            slot.image.sprite = triangleSprite;
-            logger.Log($"Set truinglaer");
-
+            slot.image.color = StaticData.settings.boardColors.fullYellowColor;
+            if (StaticData.settings.symbolMode) {
+                slot.image.sprite = triangleSprite;
+            }
         }
     }
 
@@ -86,7 +84,7 @@ public class BoardManagerScript : MonoBehaviour
         Button slot = GetBottomSlot(column, true);
 
         logger.Log($"Removed coin in column {columnIndex}.");
-        slot.image.color = BoardColors.buttonColor;
+        slot.image.color = StaticData.settings.boardColors.buttonColor;
     }
 
     private Button GetBottomSlot(GameObject column, bool getFirstFilledSlot = false)
@@ -95,7 +93,7 @@ public class BoardManagerScript : MonoBehaviour
         Button targetButton = null;
         foreach (Transform child in column.transform) {
             currentColor = child.GetComponent<Button>().image.color;
-            if (currentColor == BoardColors.fullRedColor || currentColor == BoardColors.fullYellowColor) {
+            if (currentColor == StaticData.settings.boardColors.fullRedColor || currentColor == StaticData.settings.boardColors.fullYellowColor) {
                 if (getFirstFilledSlot) {
                     targetButton = child.GetComponent<Button>();
                 }
@@ -131,9 +129,9 @@ public class BoardManagerScript : MonoBehaviour
         //Check if mouse is hovering over new object or nothing. If it is, make sure to stop previewing the move for the last selected slot.
         if (currentObject != prevObject || currentUiResults.Count == 0) {
             var currentSlotImage = currentlyPreviewedSlot?.image;
-            if (currentSlotImage && (currentSlotImage.color == defaultBoardColours.previewRedColor || currentSlotImage.color == defaultBoardColours.previewYellowColor)) {
+            if (currentSlotImage && (currentSlotImage.color == StaticData.settings.boardColors.previewRedColor || currentSlotImage.color == StaticData.settings.boardColors.previewYellowColor)) {
                 logger.LogFrame("Stopped previewing a move.");
-                currentSlotImage.color = defaultBoardColours.buttonColor;
+                currentSlotImage.color = StaticData.settings.boardColors.buttonColor;
             }             
             return;
         }
@@ -144,7 +142,7 @@ public class BoardManagerScript : MonoBehaviour
             return;
         }
 
-        Color previewColor = StaticData.redTurn ? defaultBoardColours.previewRedColor : defaultBoardColours.previewYellowColor;
+        Color previewColor = StaticData.redTurn ? StaticData.settings.boardColors.previewRedColor : StaticData.settings.boardColors.previewYellowColor;
 
         Transform parent = currentObject.transform.parent;
         Button targetButton = null;
@@ -153,7 +151,7 @@ public class BoardManagerScript : MonoBehaviour
         //Loop through each button in the column, and stop once a played move is reached. Store the last empty slot before breaking.
         foreach (Transform child in parent) {
             currentColor = child.GetComponent<Button>().image.color;
-            if (currentColor == defaultBoardColours.fullRedColor || currentColor == defaultBoardColours.fullYellowColor)
+            if (currentColor == StaticData.settings.boardColors.fullRedColor || currentColor == StaticData.settings.boardColors.fullYellowColor)
                 break;
             targetButton = child.GetComponent<Button>();
         }
@@ -227,7 +225,8 @@ public class BoardManagerScript : MonoBehaviour
     /// </summary>
     public void SetBoardColors()
     {
-        board.color = defaultBoardColours.boardColor;
-        button.image.color = defaultBoardColours.buttonColor;
+        board.color = StaticData.settings.boardColors.boardColor;
+        board.GetComponent<Outline>().effectColor = StaticData.settings.boardColors.boardOutlineColor;
+        button.image.color = StaticData.settings.boardColors.buttonColor;
     }
 }

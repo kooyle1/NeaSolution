@@ -16,7 +16,7 @@ public class StorageManagerScript : MonoBehaviour
     {
         pastGamesFile = Application.persistentDataPath + "/PastGames.json";
         settingsFile = Application.persistentDataPath + "/Settings.json";
-
+        StaticData.settings = LoadSettings();
     }
 
     public void ChangeVolume(float vol) {
@@ -39,6 +39,13 @@ public class StorageManagerScript : MonoBehaviour
         SaveSettings();
     }
 
+    public void ChangeSymbolMode(bool symbolMode)
+    {
+        settings = LoadSettings();
+        settings.symbolMode = symbolMode;
+        SaveSettings();
+    }
+
     public Settings LoadSettings()
     {
         string settingsData = File.ReadAllText(settingsFile);
@@ -50,6 +57,7 @@ public class StorageManagerScript : MonoBehaviour
     {
         string settingsData = JsonUtility.ToJson(settings);
         File.WriteAllText(settingsFile, settingsData);
+        StaticData.settings = settings;
     }
 
     public void SaveGame(Game game)
@@ -88,6 +96,7 @@ public class Game
 public class Settings
 {
     public float volume;
+    public bool symbolMode;
     public BoardColors boardColors;
     public UiColors uiColors;
 }

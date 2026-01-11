@@ -23,6 +23,10 @@ public class GameInputManagerScript : MonoBehaviour
     private void Start()
     {
         movesMade = new List<int>();
+        StaticData.isTie = false;
+        StaticData.redWon = false;
+        StaticData.yellowWon = false;
+        StaticData.redTurn = true;
     }
 
     private void Update()

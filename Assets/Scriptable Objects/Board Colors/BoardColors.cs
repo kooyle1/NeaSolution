@@ -6,6 +6,7 @@ public class BoardColors : ScriptableObject
     [Header("Settings")]
     public Color boardColor;
     public Color buttonColor;
+    public Color boardOutlineColor;
     public Color previewRedColor;
     public Color previewYellowColor;
     public Color fullRedColor;

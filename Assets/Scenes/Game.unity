@@ -10565,7 +10565,7 @@ MonoBehaviour:
   board: {fileID: 2046752013}
   triangleSprite: {fileID: 7482667652216324306, guid: cc240036a746d614697c57163f369aed, type: 3}
   squareSprite: {fileID: 7482667652216324306, guid: 4779bee4bfa06ff4fa6e55f6f8a1eb1a, type: 3}
-  boardColors: {fileID: 11400000, guid: 7a6535e99f96b7a45a24312cc855d20e, type: 2}
+  defaultBoardColours: {fileID: 11400000, guid: 7a6535e99f96b7a45a24312cc855d20e, type: 2}
   logger: {fileID: 1044940501}
   padding: 80
   showingMovePreview: 1
