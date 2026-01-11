@@ -20,7 +20,22 @@ public class StorageManagerScript : MonoBehaviour
     }
 
     public void ChangeVolume(float vol) {
+        settings = LoadSettings();
         settings.volume = vol;
+        SaveSettings();
+    }
+
+    public void ChangeUiColors(UiColors uiColors)
+    {
+        settings = LoadSettings();
+        settings.uiColors = uiColors;
+        SaveSettings();
+    }
+
+    public void ChangeBoardColors(BoardColors boardColors)
+    {
+        settings = LoadSettings();
+        settings.boardColors = boardColors;
         SaveSettings();
     }
 
@@ -73,4 +88,6 @@ public class Game
 public class Settings
 {
     public float volume;
+    public BoardColors boardColors;
+    public UiColors uiColors;
 }

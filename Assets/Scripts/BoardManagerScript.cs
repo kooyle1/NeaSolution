@@ -8,14 +8,16 @@ public class BoardManagerScript : MonoBehaviour
     [Header("Gameobject References")]
     [SerializeField] Button button;
     [SerializeField] Image board;
+    [SerializeField] Sprite triangleSprite;
+    [SerializeField] Sprite squareSprite;
 
     [Header("ScriptableObject References")]
-    [SerializeField] BoardColors boardColors;
+    [SerializeField] BoardColors defaultBoardColours;
 
     [Header("MonoBehaviour Script References")]
     [SerializeField] LoggerScript logger;
 
-    public BoardColors BoardColors { get { return boardColors; } }
+    public BoardColors BoardColors { get { return defaultBoardColours; } }
 
     [Header("Settings")]
     [SerializeField] int padding; //gap between cells
@@ -33,8 +35,6 @@ public class BoardManagerScript : MonoBehaviour
     private Button currentlyPreviewedSlot = null;
     private GameObject currentObject;
     private GameObject prevObject;
-
-    private bool isRed = true;
 
 
     private void Update()
@@ -65,13 +65,18 @@ public class BoardManagerScript : MonoBehaviour
         GameObject column = columnList[columnIndex];
         Button slot = GetBottomSlot(column);
 
-        if (isRed) {
+        if (StaticData.redTurn) {
             logger.Log($"Placed red coin in column {columnIndex}.");
             slot.image.color = BoardColors.fullRedColor;
+            slot.image.sprite = squareSprite;
+            logger.Log($"Set squaer");
         }
         else {
             logger.Log($"Placed yellow coin in column {columnIndex}.");
             slot.image.color = BoardColors.fullYellowColor;
+            slot.image.sprite = triangleSprite;
+            logger.Log($"Set truinglaer");
+
         }
     }
 
@@ -126,9 +131,9 @@ public class BoardManagerScript : MonoBehaviour
         //Check if mouse is hovering over new object or nothing. If it is, make sure to stop previewing the move for the last selected slot.
         if (currentObject != prevObject || currentUiResults.Count == 0) {
             var currentSlotImage = currentlyPreviewedSlot?.image;
-            if (currentSlotImage && (currentSlotImage.color == boardColors.previewRedColor || currentSlotImage.color == boardColors.previewYellowColor)) {
+            if (currentSlotImage && (currentSlotImage.color == defaultBoardColours.previewRedColor || currentSlotImage.color == defaultBoardColours.previewYellowColor)) {
                 logger.LogFrame("Stopped previewing a move.");
-                currentSlotImage.color = boardColors.buttonColor;
+                currentSlotImage.color = defaultBoardColours.buttonColor;
             }             
             return;
         }
@@ -139,7 +144,7 @@ public class BoardManagerScript : MonoBehaviour
             return;
         }
 
-        Color previewColor = isRed ? boardColors.previewRedColor : boardColors.previewYellowColor;
+        Color previewColor = StaticData.redTurn ? defaultBoardColours.previewRedColor : defaultBoardColours.previewYellowColor;
 
         Transform parent = currentObject.transform.parent;
         Button targetButton = null;
@@ -148,7 +153,7 @@ public class BoardManagerScript : MonoBehaviour
         //Loop through each button in the column, and stop once a played move is reached. Store the last empty slot before breaking.
         foreach (Transform child in parent) {
             currentColor = child.GetComponent<Button>().image.color;
-            if (currentColor == boardColors.fullRedColor || currentColor == boardColors.fullYellowColor)
+            if (currentColor == defaultBoardColours.fullRedColor || currentColor == defaultBoardColours.fullYellowColor)
                 break;
             targetButton = child.GetComponent<Button>();
         }
@@ -161,20 +166,6 @@ public class BoardManagerScript : MonoBehaviour
             return;
         }
         logger.LogFrame("Attempted to preview a move in a full column");
-    }
-
-
-    /// <summary>
-    ///  Updates the object's internal variable tracking the current turn.
-    /// </summary>
-    public void UpdateTurn(bool isRed)
-    {
-        if (isRed) {
-            this.isRed = true;
-        }
-        else {
-            this.isRed = false;
-        }
     }
 
     public void UpdateRowCount(int index)
@@ -236,7 +227,7 @@ public class BoardManagerScript : MonoBehaviour
     /// </summary>
     public void SetBoardColors()
     {
-        board.color = boardColors.boardColor;
-        button.image.color = boardColors.buttonColor;
+        board.color = defaultBoardColours.boardColor;
+        button.image.color = defaultBoardColours.buttonColor;
     }
 }

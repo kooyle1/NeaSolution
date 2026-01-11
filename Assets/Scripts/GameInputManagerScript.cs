@@ -15,12 +15,6 @@ public class GameInputManagerScript : MonoBehaviour
     [SerializeField] private SolverScript solver;
     [SerializeField] LoggerScript logger;
 
-    private bool aiMode = false;
-    private bool aiFirst = false;
-    private bool isRed = true;
-    private bool yellowWon = false;
-    private bool redWon = false;
-    private bool isTie = false;
     private Task<int> aiTask;
     private bool aiThinking = false;
 
@@ -45,7 +39,7 @@ public class GameInputManagerScript : MonoBehaviour
 
     public void PlayMoveOnClick()
     {
-        if (yellowWon || redWon || isTie || aiThinking) {
+        if (StaticData.yellowWon || StaticData.redWon || StaticData.isTie || aiThinking) {
             logger.Log("Player tried moving after the round ended or while AI was thinking.");
             return;
         }
@@ -54,7 +48,7 @@ public class GameInputManagerScript : MonoBehaviour
         int columnIndex = boardManager.columnList.IndexOf(column);    
         ApplyMove(columnIndex);
 
-        if (!(yellowWon || redWon || isTie) && aiMode) {
+        if (!(StaticData.yellowWon || StaticData.redWon || StaticData.isTie) && StaticData.aiMode) {
             StartCoroutine(PlayAiMove());
         }
                   
@@ -69,36 +63,34 @@ public class GameInputManagerScript : MonoBehaviour
 
         AudioManager.instance.PlayMoveSFX();
         gameLogicManager.PlayMove(columnIndex);
+        boardManager.PlayMove(columnIndex);
         logger.Log($"Successfully made a move in column {columnIndex}");
 
         //Update turn and assume player won before actually checking     
-        if (isRed) {
-            isRed = false;
-            redWon = true;
+        if (StaticData.redTurn) {
+            StaticData.redTurn = false;
+            StaticData.redWon = true;
         }
         else {
-            isRed = true;
-            yellowWon = true;
+            StaticData.redTurn = true;
+            StaticData.yellowWon = true;
         }
-
-        boardManager.PlayMove(columnIndex);
-        boardManager.UpdateTurn(isRed);
 
         //Display text based on what happened after the move (win, tie, or nothing)
         if (gameLogicManager.CheckWin()) {
             logger.Log($"A win occured on this turn.");
-            gameUiManager.DisplayWin(redWon);
+            gameUiManager.DisplayWin();
         }
         else if (gameLogicManager.CheckTie()) {
             logger.Log("A tie occured on this turn.");
             gameUiManager.DisplayTie();
-            isTie = true;
+            StaticData.isTie = true;
         }
         else {
-            gameUiManager.UpdateTurnIndicator(isRed);
+            gameUiManager.UpdateTurnIndicator();
             logger.Log("Game did not end, now other player's turn.");
-            redWon = false;
-            yellowWon = false;
+            StaticData.redWon = false;
+            StaticData.yellowWon = false;
         }
 
         movesMade.Add(columnIndex);
@@ -126,39 +118,38 @@ public class GameInputManagerScript : MonoBehaviour
 
     public void SetAiMode(bool inp)
     {
-        aiMode = inp;
-        gameUiManager.ChangeModeText(aiMode, aiFirst);
+        StaticData.aiMode = inp;
+        gameUiManager.ChangeModeText(StaticData.aiMode, StaticData.aiFirst);
     }
 
     public void SetAiFirst(bool inp)
     {
-        aiFirst = inp;
+        StaticData.aiFirst = inp;
     }
 
     public void StartNextRound()
     {
-        if (redWon || yellowWon || isTie) {
+        if (StaticData.redWon || StaticData.yellowWon || StaticData.isTie) {
             Game playedGame = new Game
             {
                 moveList = movesMade,
-                aiFirst = aiFirst,
-                redWon = redWon
+                aiFirst = StaticData.aiFirst,
+                redWon = StaticData.redWon
             };
             storageManager.SaveGame(playedGame);
         }
 
-        isRed = true;
-        yellowWon = false;
-        redWon = false;
-        isTie = false;
+        StaticData.redTurn = true;
+        StaticData.yellowWon = false;
+        StaticData.redWon = false;
+        StaticData.isTie = false;
 
-        gameUiManager.UpdateTurnIndicator(isRed);
-        boardManager.UpdateTurn(isRed);
+        gameUiManager.UpdateTurnIndicator();
         gameLogicManager.ResetBoard();
         boardManager.CreateBoard();
         movesMade.Clear();
 
-        if (aiFirst && aiMode) {
+        if (StaticData.aiFirst && StaticData.aiMode) {
             StartCoroutine(PlayAiMove());
         }
     }
@@ -169,44 +160,4 @@ public class GameInputManagerScript : MonoBehaviour
         gameUiManager.ResetScores();
 
     }
-
-    /* For analysis screen
-    public void PlayMove(int column)
-    {
-        Button slot = GetBottomSlot(boardManager.columnList[column]);
-        if (!slot) {
-            return;
-        }
-
-        gameUiManager.UpdateTurnIndicator(isRed);
-        boardManager.UpdateTurn(isRed);
-        if (isRed) {
-            slot.image.color = boardManager.BoardColors.fullRedColor;
-            isRed = false;
-        }
-        else {
-            slot.image.color = boardManager.BoardColors.fullYellowColor;
-            isRed = true;
-        }
-    }
-
-    public void UndoMove(int column)
-    {
-        Button slot = GetBottomSlot(boardManager.columnList[column]);
-        if (!slot) {
-            return;
-        }
-
-        gameUiManager.UpdateTurnIndicator(isRed);
-        boardManager.UpdateTurn(isRed);
-        if (isRed) {
-            slot.image.color = boardManager.BoardColors.buttonColor;
-            isRed = false;
-        }
-        else {
-            slot.image.color = boardManager.BoardColors.buttonColor;
-            isRed = true;
-        }
-    }
-    */
 }

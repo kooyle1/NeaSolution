@@ -15,9 +15,9 @@ public class GameUiManagerScript : BaseUiManagerScript
     /// <summary>
     ///  Updates the turn indicator text based on who's turn it is.
     /// </summary>
-    public void UpdateTurnIndicator(bool isRed)
+    public void UpdateTurnIndicator()
     {
-        if (isRed) {
+        if (StaticData.redTurn) {
             turnText.text = "RED TURN"; 
         }
         else {
@@ -48,9 +48,9 @@ public class GameUiManagerScript : BaseUiManagerScript
     /// <summary>
     ///  Updates the turn indicator text to display who just won.
     /// </summary>
-    public void DisplayWin(bool redWon)
+    public void DisplayWin()
     {
-        if (redWon) {
+        if (StaticData.redWon) {
             turnText.text = "RED WON!!";
             UpdateRedScore();
         }
@@ -75,7 +75,8 @@ public class GameUiManagerScript : BaseUiManagerScript
     /// </summary>
     private void UpdateRedScore()
     {
-        int score = Convert.ToInt32(redScoreText.text) + 1;
+        StaticData.redPoints++;
+        int score = StaticData.redPoints;
         redScoreText.text = score.ToString();
     }
 
@@ -84,12 +85,15 @@ public class GameUiManagerScript : BaseUiManagerScript
     /// </summary>
     private void UpdateYellowScore()
     {
-        int score = Convert.ToInt32(yellowScoreText.text) + 1;
+        StaticData.yellowPoints++;
+        int score = StaticData.yellowPoints;
         yellowScoreText.text = score.ToString();
     }
 
     public void ResetScores()
     {
+        StaticData.redPoints = 0;
+        StaticData.yellowPoints = 0;
         redScoreText.text = 0.ToString();
         yellowScoreText.text = 0.ToString();
 

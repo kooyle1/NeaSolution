@@ -14,7 +14,12 @@ public class AnalysisInputManager : MonoBehaviour
     private int[] currentGame;
     private int index = -1;
 
-    private bool isRed = true;
+    private void Start()
+    {
+        if (index == -1) {
+            StaticData.redTurn = true;
+        }
+    }
 
     public void OpenGameReplay()
     {
@@ -41,9 +46,8 @@ public class AnalysisInputManager : MonoBehaviour
         int columnIndex = currentGame[index];
         boardManager.PlayMove(columnIndex);
         gameLogic.PlayMove(columnIndex);
-        isRed = !isRed;
-        boardManager.UpdateTurn(isRed);
-        analysisUiManager.UpdateTurnIndicator(isRed);
+        StaticData.redTurn = !StaticData.redTurn;
+        analysisUiManager.UpdateTurnIndicator();
     }
 
     public void UndoMove()
@@ -55,9 +59,8 @@ public class AnalysisInputManager : MonoBehaviour
         int columnIndex = currentGame[index];
         boardManager.RemoveCoin(columnIndex);
         gameLogic.UndoMove(columnIndex);
-        isRed = !isRed;
-        boardManager.UpdateTurn(isRed);
-        analysisUiManager.UpdateTurnIndicator(isRed);
+        StaticData.redTurn = !StaticData.redTurn;
+        analysisUiManager.UpdateTurnIndicator();
         index--;
 
     }

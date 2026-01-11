@@ -100,9 +100,9 @@ public class AnalysisUiManagerScript : BaseUiManagerScript
         base.Start();
     }
 
-    public void UpdateTurnIndicator(bool isRed)
+    public void UpdateTurnIndicator()
     {
-        if (isRed) {
+        if (StaticData.redTurn) {
             turnText.text = "Current State: Red Turn";
         }
         else {

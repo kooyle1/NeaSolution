@@ -1614,7 +1614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49f7460fbe066b24b9659cd4208e9360, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLogging: 0
+  isLogging: 1
   isFrameLogging: 0
 --- !u!1 &440009471
 GameObject:
@@ -10563,6 +10563,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 8004537994694207333}
   board: {fileID: 2046752013}
+  triangleSprite: {fileID: 7482667652216324306, guid: cc240036a746d614697c57163f369aed, type: 3}
+  squareSprite: {fileID: 7482667652216324306, guid: 4779bee4bfa06ff4fa6e55f6f8a1eb1a, type: 3}
   boardColors: {fileID: 11400000, guid: 7a6535e99f96b7a45a24312cc855d20e, type: 2}
   logger: {fileID: 1044940501}
   padding: 80
