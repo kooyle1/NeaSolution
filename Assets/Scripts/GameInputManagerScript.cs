@@ -131,6 +131,20 @@ public class GameInputManagerScript : MonoBehaviour
         StaticData.aiFirst = inp;
     }
 
+    public void ForfeitRound()
+    {
+        if (aiThinking) {
+            return;
+        }
+        if (StaticData.redTurn) {
+            StaticData.yellowWon = true;
+        }
+        else {
+            StaticData.redWon = true;
+        }
+        gameUiManager.DisplayWin();
+    }
+
     public void StartNextRound()
     {
         if (StaticData.redWon || StaticData.yellowWon || StaticData.isTie) {
