@@ -26,22 +26,19 @@ public class GameUiManagerScript : BaseUiManagerScript
     }
 
     public void ChangeModeText(bool isAiMode, bool aiFirst)
-    {
-        string aiFirstText;
-
-        if (aiFirst) {
-            aiFirstText = "Ai First";
-        }
-        else {
-            aiFirstText = "Ai Second";
-        }  
-        
-
+    {    
         if (isAiMode) {
+            string aiFirstText;
+            if (aiFirst) {
+                aiFirstText = "Ai First";
+            }
+            else {
+                aiFirstText = "Ai Second";
+            }
             gamemodeText.text = "AI Mode: " + aiFirstText;
         }
         else {
-            gamemodeText.text = "2-Player: " + aiFirstText;
+            gamemodeText.text = "2-Player";
         }
     }
 

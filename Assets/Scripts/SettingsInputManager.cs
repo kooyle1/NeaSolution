@@ -7,28 +7,35 @@ using TMPro;
 public class SettingsUiManager : BaseUiManagerScript
 {
     [SerializeField] StorageManagerScript storageManager;
-    [SerializeField] Toggle checkBox;
+    [SerializeField] Toggle colorblindCheckbox;
+    [SerializeField] Toggle windowedCheckbox;
     [SerializeField] TMP_Dropdown boardColorsDropdown;
     [SerializeField] TMP_Dropdown uiColorsDropdown;
-    [SerializeField] List<BoardColors> boardColors;
-    [SerializeField] List<UiColors> uiColors;
+    
 
     
     protected override void Start()
     {
         base.Start();
+
         Settings settings = StaticData.settings;
-        Debug.Log(settings);
-        checkBox.isOn = settings.symbolMode;  
-        boardColorsDropdown.value = boardColors.IndexOf(settings.boardColors);
-        uiColorsDropdown.value = uiColors.IndexOf(settings.uiColors);
+        windowedCheckbox.isOn = settings.windowedMode;
+        colorblindCheckbox.isOn = settings.symbolMode;  
+        boardColorsDropdown.value = storageManager.boardColorsList.IndexOf(settings.boardColors);
+        uiColorsDropdown.value = storageManager.uiColorsList.IndexOf(settings.uiColors);
     }
 
     public override void SetColors()
     {
-        checkBox.image.color = StaticData.settings.uiColors.buttonColor;
-        checkBox.GetComponentInChildren<Outline>().effectColor = StaticData.settings.uiColors.outlineColor;
+        colorblindCheckbox.image.color = StaticData.settings.uiColors.buttonColor;
+        windowedCheckbox.image.color = StaticData.settings.uiColors.buttonColor;
         base.SetColors();
+    }
+
+    public void SwitchWindowedMode(bool mode)
+    {
+        storageManager.ChangeWindowedMode(mode);
+        base.SetWindowed(mode);
     }
 
     public void SwitchColorblindMode(bool mode)
@@ -38,11 +45,11 @@ public class SettingsUiManager : BaseUiManagerScript
 
     public void ChangeUiTheme(int index)
     {
-        storageManager.ChangeUiColors(uiColors[index]);
+        storageManager.ChangeUiColors(storageManager.uiColorsList[index]);
     }
 
     public void ChangeBoardTheme(int index)
     {
-        storageManager.ChangeBoardColors(boardColors[index]);
+        storageManager.ChangeBoardColors(storageManager.boardColorsList[index]);
     }
 }

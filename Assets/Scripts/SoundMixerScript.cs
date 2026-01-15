@@ -9,7 +9,6 @@ public class SoundMixerScript : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private StorageManagerScript storageManager;
-
     private void Start()
     {
         Load();

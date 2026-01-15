@@ -8,20 +8,20 @@ public class BoardManagerScript : MonoBehaviour
     [Header("Gameobject References")]
     [SerializeField] Button button;
     [SerializeField] Image board;
-    [SerializeField] Sprite triangleSprite;
-    [SerializeField] Sprite squareSprite;
+    [SerializeField] Sprite yellowAltSprite;
+    [SerializeField] Sprite redAltSprite;
+    [SerializeField] Sprite defaultSprite;
 
 
     [Header("MonoBehaviour Script References")]
     [SerializeField] LoggerScript logger;
+    [SerializeField] GameLogicScript gameLogic;
 
 
     [Header("Settings")]
     [SerializeField] int padding; //gap between cells
     [SerializeField] private bool showingMovePreview;
 
-    private int rowCount = 6;
-    private int columnCount = 7;
     public List<GameObject> columnList { get; private set; }
 
     private GraphicRaycaster uiRaycaster;
@@ -66,14 +66,14 @@ public class BoardManagerScript : MonoBehaviour
             logger.Log($"Placed red coin in column {columnIndex}.");
             slot.image.color = StaticData.settings.boardColors.fullRedColor;
             if (StaticData.settings.symbolMode) {
-                slot.image.sprite = squareSprite;
+                slot.image.sprite = redAltSprite;
             }    
         }
         else {
             logger.Log($"Placed yellow coin in column {columnIndex}.");
             slot.image.color = StaticData.settings.boardColors.fullYellowColor;
             if (StaticData.settings.symbolMode) {
-                slot.image.sprite = triangleSprite;
+                slot.image.sprite = yellowAltSprite;
             }
         }
     }
@@ -82,6 +82,7 @@ public class BoardManagerScript : MonoBehaviour
     {
         GameObject column = columnList[columnIndex];
         Button slot = GetBottomSlot(column, true);
+        slot.image.sprite = defaultSprite;
 
         logger.Log($"Removed coin in column {columnIndex}.");
         slot.image.color = StaticData.settings.boardColors.buttonColor;
@@ -132,6 +133,7 @@ public class BoardManagerScript : MonoBehaviour
             if (currentSlotImage && (currentSlotImage.color == StaticData.settings.boardColors.previewRedColor || currentSlotImage.color == StaticData.settings.boardColors.previewYellowColor)) {
                 logger.LogFrame("Stopped previewing a move.");
                 currentSlotImage.color = StaticData.settings.boardColors.buttonColor;
+                currentSlotImage.sprite = defaultSprite;
             }             
             return;
         }
@@ -142,7 +144,27 @@ public class BoardManagerScript : MonoBehaviour
             return;
         }
 
-        Color previewColor = StaticData.redTurn ? StaticData.settings.boardColors.previewRedColor : StaticData.settings.boardColors.previewYellowColor;
+        Color previewColor;
+        Sprite previewSprite;
+
+        if (StaticData.redTurn) {
+            previewColor = StaticData.settings.boardColors.previewRedColor;
+            if (StaticData.settings.symbolMode) {
+                previewSprite = redAltSprite;
+            }
+            else {
+                previewSprite = defaultSprite;
+            }
+        }
+        else {
+            previewColor = StaticData.settings.boardColors.previewYellowColor;
+            if (StaticData.settings.symbolMode) {
+                previewSprite = yellowAltSprite;
+            }
+            else {
+                previewSprite = defaultSprite;
+            }
+        }
 
         Transform parent = currentObject.transform.parent;
         Button targetButton = null;
@@ -160,6 +182,7 @@ public class BoardManagerScript : MonoBehaviour
         if (targetButton != null) {
             currentlyPreviewedSlot = targetButton;
             currentlyPreviewedSlot.image.color = previewColor;
+            currentlyPreviewedSlot.image.sprite = previewSprite;
             logger.LogFrame("Currently previewing a move");
             return;
         }
@@ -168,14 +191,14 @@ public class BoardManagerScript : MonoBehaviour
 
     public void UpdateRowCount(int index)
     {
-        rowCount = index + 6;
+        StaticData.rows = index + 6;
     }
 
     public void UpdateColumnCount(int index)
     {
-        columnCount = index + 6;
+        StaticData.cols = index + 6;
     }
-   
+
     /// <summary>
     ///  Instantiates buttons in a grid that fits inside the board. Buttons are instantiated into columns as children from top to down (so highest button is first and lowest is last). Also destroys old board buttons.
     /// </summary>
@@ -192,8 +215,8 @@ public class BoardManagerScript : MonoBehaviour
         }
 
         //Calculate and set new button diameter
-        float widthDiameter = (boardTransform.rect.width - padding) / columnCount;
-        float heightDiameter = (boardTransform.rect.height - padding) / rowCount;
+        float widthDiameter = (boardTransform.rect.width - padding) / StaticData.cols;
+        float heightDiameter = (boardTransform.rect.height - padding) / StaticData.rows;
         float buttonDiameter = Mathf.Min(widthDiameter, heightDiameter);
         buttonTransform.sizeDelta = new Vector2(buttonDiameter, buttonDiameter);
 
@@ -207,17 +230,24 @@ public class BoardManagerScript : MonoBehaviour
 
         //Instantiate columns of buttons from the start position
         Transform column;
-        for (int i = 0; i < columnCount;  i++) {
-            startPos.x += widthDiameter + padding/columnCount;
+        for (int i = 0; i < StaticData.cols;  i++) {
+            startPos.x += widthDiameter + padding/ StaticData.cols;
             startPos.y = boardTransform.rect.yMax;
             column = columnList[i].transform;  
 
-            for (int j = 0; j < rowCount; j++) {
-                startPos.y -= heightDiameter + padding/rowCount;
+            for (int j = 0; j < StaticData.rows; j++) {
+                startPos.y -= heightDiameter + padding/ StaticData.rows;
                 Instantiate(button, startPos, Quaternion.identity).transform.SetParent(column, false);
             }
         }
-               
+
+        StaticData.isTie = false;
+        StaticData.redWon = false;
+        StaticData.yellowWon = false;
+        StaticData.redTurn = true;
+
+        gameLogic.UpdateTieCheckMask();
+
     }
 
     /// <summary>

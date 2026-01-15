@@ -19,14 +19,23 @@ public abstract class BaseUiManagerScript : MonoBehaviour
     protected List<Image> dividerList;
     protected List<Button> buttonList;
     protected List<TMP_Text> textList;
+    protected List<Outline> outlineList;
 
     /// <summary>
     ///  Adds all buttons in canvas to buttonList and all text in canvas to textList and then calls SetColors().
     /// </summary>
     protected virtual void Start()
     {
+        if (StaticData.settings.windowedMode) {
+            SetWindowed(true);
+        }
+        else {
+            SetWindowed(false);
+        }
+        
         buttonList = canvas.GetComponentsInChildren<Button>(true).ToList();
         textList = canvas.GetComponentsInChildren<TMP_Text>(true).ToList();
+        outlineList = canvas.GetComponentsInChildren<Outline>(true).ToList();
         dividerList = new List<Image>();
         dropdownList = new List<Image>();
 
@@ -55,7 +64,6 @@ public abstract class BaseUiManagerScript : MonoBehaviour
             }           
             logger.Log($"Setting colour of button object '{button.name}'");
             button.image.color = StaticData.settings.uiColors.buttonColor;
-            button.GetComponent<Outline>().effectColor = StaticData.settings.uiColors.outlineColor;
         }
 
         foreach (TMP_Text text in textList) {
@@ -73,9 +81,28 @@ public abstract class BaseUiManagerScript : MonoBehaviour
             dropdown.color = StaticData.settings.uiColors.buttonColor;
         }
 
+        foreach (Outline outline in outlineList) {
+            logger.Log($"Setting colour of dropdown object '{outline.name}'");
+            outline.effectColor = StaticData.settings.uiColors.outlineColor;
+        }
+
         background.color = StaticData.settings.uiColors.backgroundColor;
         logger.Log($"Setting colour of background object '{background.name}'");
 
+    }
+
+    protected void SetWindowed(bool windowed)
+    {
+        if (windowed) {
+            Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+        }
+        else {
+            Screen.SetResolution(
+            Screen.currentResolution.width,
+            Screen.currentResolution.height,
+            FullScreenMode.FullScreenWindow
+        );
+        }
     }
     public void EnableObject(GameObject uiObject)
     {
@@ -89,23 +116,23 @@ public abstract class BaseUiManagerScript : MonoBehaviour
         uiObject.SetActive(false);
     }
 
-    public virtual void LoadGameScene()
+    public void LoadGameScene()
     {
         SceneManager.LoadScene(0);
     }
 
-    public virtual void LoadAnalysisScene()
+    public void LoadAnalysisScene()
     {
         SceneManager.LoadScene(1);
     }
-    public virtual void LoadSettingsScene()
+    public void LoadSettingsScene()
     {
         SceneManager.LoadScene(2);
     }
 
-    public virtual void ExitGame()
+    public void ExitGame()
     {
-        ExitGame();
+        Application.Quit();
     }
 
 }

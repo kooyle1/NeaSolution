@@ -11,15 +11,17 @@ public class GameLogicScript : MonoBehaviour
     private void Start()
     {
         UpdateTieCheckMask();
+        colCount = StaticData.cols;
+        rowCount = StaticData.rows;
     }
 
-    private void UpdateTieCheckMask()
+    public void UpdateTieCheckMask()
     {
-        ulong columnMask = ((1UL << rowCount) - 1) << 1;
+        ulong columnMask = ((1UL << StaticData.rows) - 1) << 1;
         ulong result = 0UL;
 
-        for (int i = 0; i < colCount; i++) {
-            result |= columnMask << (i * (rowCount + 1));
+        for (int i = 0; i < StaticData.cols; i++) {
+            result |= columnMask << (i * (StaticData.rows + 1));
         }
 
         tieCheckMask = result >> 1;
@@ -64,14 +66,14 @@ public class GameLogicScript : MonoBehaviour
     /// </summary>
     public void PlayMove(int column)
     {
-        fullBoard |= fullBoard + (1UL << (column * (rowCount + 1)));
+        fullBoard |= fullBoard + (1UL << (column * (StaticData.rows + 1)));
         currentPosition ^= fullBoard;
     }
 
     public void UndoMove(int column)
     {
-        for (int row = rowCount - 1; row >= 0; row--) {
-            ulong bit = 1UL << (column * (rowCount + 1) + row);
+        for (int row = StaticData.rows - 1; row >= 0; row--) {
+            ulong bit = 1UL << (column * (StaticData.rows + 1) + row);
             if ((fullBoard & bit) == 0) continue;
 
             fullBoard ^= bit;                 
@@ -89,7 +91,7 @@ public class GameLogicScript : MonoBehaviour
     /// </summary>
     public ulong PlayMove(int column, ulong board)
     {
-        board |= board + (1UL << (column * (rowCount + 1)));
+        board |= board + (1UL << (column * (StaticData.rows + 1)));
         return board;
     }
 
@@ -107,7 +109,7 @@ public class GameLogicScript : MonoBehaviour
     /// </summary>
     public bool CanPlayColumn(int column, ulong board)
     {
-        return (board & ((1UL << (rowCount - 1)) << column * (rowCount + 1))) == 0;
+        return (board & ((1UL << (StaticData.rows - 1)) << column * (StaticData.rows + 1))) == 0;
     }
 
     /// <summary>
@@ -126,8 +128,8 @@ public class GameLogicScript : MonoBehaviour
         ulong checkMask;
 
         //Horizontal 
-        checkMask = pos & (pos >> (rowCount + 1));
-        if ((checkMask & (checkMask >> (2 * (rowCount + 1)))) != 0) {
+        checkMask = pos & (pos >> (StaticData.rows + 1));
+        if ((checkMask & (checkMask >> (2 * (StaticData.rows + 1)))) != 0) {
             return true;
         }
 
@@ -138,14 +140,14 @@ public class GameLogicScript : MonoBehaviour
         }
 
         //Diagonal (down-right/up-left)
-        checkMask = pos & (pos >> rowCount);
-        if ((checkMask & (checkMask >> (2 * (rowCount)))) != 0) {
+        checkMask = pos & (pos >> StaticData.rows);
+        if ((checkMask & (checkMask >> (2 * (StaticData.rows)))) != 0) {
             return true;
         }
 
         //Diagonal (up-right/down-left)
-        checkMask = pos & (pos >> rowCount + 2);
-        if ((checkMask & (checkMask >> (2 * (rowCount + 2)))) != 0) {
+        checkMask = pos & (pos >> StaticData.rows + 2);
+        if ((checkMask & (checkMask >> (2 * (StaticData.rows + 2)))) != 0) {
             return true;
         }
 

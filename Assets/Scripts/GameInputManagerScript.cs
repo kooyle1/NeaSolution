@@ -23,10 +23,8 @@ public class GameInputManagerScript : MonoBehaviour
     private void Start()
     {
         movesMade = new List<int>();
-        StaticData.isTie = false;
-        StaticData.redWon = false;
-        StaticData.yellowWon = false;
-        StaticData.redTurn = true;
+        StaticData.rows = 6;
+        StaticData.cols = 7;
     }
 
     private void Update()
@@ -151,6 +149,8 @@ public class GameInputManagerScript : MonoBehaviour
             Game playedGame = new Game
             {
                 moveList = movesMade,
+                rows = StaticData.rows,
+                cols = StaticData.cols,
                 aiFirst = StaticData.aiFirst,
                 redWon = StaticData.redWon
             };

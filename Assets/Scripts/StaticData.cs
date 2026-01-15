@@ -14,6 +14,7 @@ public class StaticData
 
     public static int redPoints = 0;
     public static int yellowPoints = 0;
-
+    public static int rows = 6;
+    public static int cols = 7;
 
 }

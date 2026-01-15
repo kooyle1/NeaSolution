@@ -11,39 +11,36 @@ public class AnalysisInputManager : MonoBehaviour
     [SerializeField] private SolverScript solver;
     [SerializeField] LoggerScript logger;
 
-    private int[] currentGame;
+    private int[] currentMoveList;
     private int index = -1;
-
-    private void Start()
-    {
-        if (index == -1) {
-            StaticData.redTurn = true;
-        }
-    }
 
     public void OpenGameReplay()
     {
         GetGame();
         boardManager.CreateBoard();
+        analysisUiManager.UpdateTurnIndicator();
         index = -1;
     }
 
     private void GetGame()
     {
         int index = int.Parse(EventSystem.current.currentSelectedGameObject.name[0].ToString());
-        currentGame = analysisUiManager.GetGameByIndex(index);
+        Game currentGame = analysisUiManager.GetGameByIndex(index);
+        currentMoveList = currentGame.moveList.ToArray();
+        StaticData.rows = currentGame.rows;
+        StaticData.cols = currentGame.cols;
         logger.Log(string.Join(", ", currentGame));
         logger.Log(index);
     }
 
     public void PlayNextMove()
     {
-        if (index >= currentGame.Length - 1) {
+        if (index >= currentMoveList.Length - 1) {
             return;
         }
         AudioManager.instance.PlayMoveSFX();
         index++;
-        int columnIndex = currentGame[index];
+        int columnIndex = currentMoveList[index];
         boardManager.PlayMove(columnIndex);
         gameLogic.PlayMove(columnIndex);
         StaticData.redTurn = !StaticData.redTurn;
@@ -56,7 +53,7 @@ public class AnalysisInputManager : MonoBehaviour
             return;
         }
         AudioManager.instance.PlayMoveSFX();
-        int columnIndex = currentGame[index];
+        int columnIndex = currentMoveList[index];
         boardManager.RemoveCoin(columnIndex);
         gameLogic.UndoMove(columnIndex);
         StaticData.redTurn = !StaticData.redTurn;
