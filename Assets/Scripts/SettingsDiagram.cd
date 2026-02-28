@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EasyAi" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.627" />
+  </Class>
+  <Class Name="MediumAi" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HardAi" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="ImpossibleAi" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AudioManager">
+    <Position X="15.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAABCAAAAAAgAAAAgBAAABAAACAAAAAAAACAEA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseUiManager">
+    <Position X="17" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAEAACAAACBgAKAAAAQGAAgAhABAAEBCA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\BaseUiManagerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameConfig">
+    <Position X="13.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAABAAAAAAACAAAAAAAACAAAgCAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\GameConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameState">
+    <Position X="11.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\GameState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger">
+    <Position X="24.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAo=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\LoggerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MatchState">
+    <Position X="10" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\MatchState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StorageManager">
+    <Position X="17.25" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAgAAIgBQAMAogAAAAAAAAADQEAAEIAIIAQAIAEA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\StorageManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SettingsUiManager">
+    <Position X="13.5" Y="2" Width="2" />
+    <InheritanceLine Type="BaseUiManager" FixedToPoint="true">
+      <Path>
+        <Point X="17" Y="3.25" />
+        <Point X="15.5" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAQABCAAAAAAAAAAQAAIAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Settings Scene\SettingsUiManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SettingsInputManager">
+    <Position X="13.25" Y="6.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgAAIAAAAAAAAAAASAAAAAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Settings Scene\SettingsInputManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="settingsUiManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="IAiStrategy">
+    <Position X="1.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

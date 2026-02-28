@@ -653,6 +653,11 @@ Transform:
   - {fileID: 383122914}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &293804890 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7050938899994677002, guid: 062f4c8bb9bece540a67f7ea6c2c7ce4, type: 3}
+  m_PrefabInstance: {fileID: 1948221797}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &312911994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,8 +1471,8 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1786256293}
-        m_TargetAssemblyTypeName: SettingsUiManager, Assembly-CSharp
+      - m_Target: {fileID: 2127314062}
+        m_TargetAssemblyTypeName: SettingsInputManager, Assembly-CSharp
         m_MethodName: SwitchColorblindMode
         m_Mode: 0
         m_Arguments:
@@ -1932,8 +1937,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1786256293}
-        m_TargetAssemblyTypeName: SettingsUiManager, Assembly-CSharp
+      - m_Target: {fileID: 2127314062}
+        m_TargetAssemblyTypeName: SettingsInputManager, Assembly-CSharp
         m_MethodName: ChangeUiTheme
         m_Mode: 0
         m_Arguments:
@@ -2418,8 +2423,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1786256293}
-        m_TargetAssemblyTypeName: SettingsUiManager, Assembly-CSharp
+      - m_Target: {fileID: 2127314062}
+        m_TargetAssemblyTypeName: SettingsInputManager, Assembly-CSharp
         m_MethodName: ChangeBoardTheme
         m_Mode: 0
         m_Arguments:
@@ -5106,53 +5111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
---- !u!1 &1470505024
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1470505025}
-  - component: {fileID: 1470505026}
-  m_Layer: 0
-  m_Name: Sound Mixer Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1470505025
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470505024}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.991767, y: -0.46085474, z: -0.015277457}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1470505026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470505024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fd0d062599cee6488b3d030199ede19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 21d898972da332f46b43dcb57c650212, type: 2}
-  volumeSlider: {fileID: 1859519292}
-  storageManager: {fileID: 443465450}
 --- !u!1 &1477655669
 GameObject:
   m_ObjectHideFlags: 0
@@ -5339,6 +5297,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619776280}
   m_CullTransparentMesh: 1
+--- !u!1 &1683820181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1683820183}
+  - component: {fileID: 1683820182}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1683820182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683820181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b6ff9cfa7266649b2c1da6ac4325ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundFXObject: {fileID: 3533614825022384691, guid: 887026e8e06c4d44c98db8238821cd30, type: 3}
+  moveSFX: {fileID: 8300000, guid: bbf9cb7c45bbffe4688ad8c041c8342d, type: 3}
+  volume: 1
+  audioMixer: {fileID: 24100000, guid: 21d898972da332f46b43dcb57c650212, type: 2}
+--- !u!4 &1683820183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683820181}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.991767, y: -0.46085474, z: -0.015277457}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1763930801
 GameObject:
   m_ObjectHideFlags: 0
@@ -5429,7 +5435,7 @@ GameObject:
   - component: {fileID: 1786256294}
   - component: {fileID: 1786256293}
   m_Layer: 0
-  m_Name: Settings Input Manager
+  m_Name: Settings UI Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5444,17 +5450,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1786256292}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32f4a185d41aa5e4195e57f74eceae0f, type: 3}
+  m_Script: {fileID: 11500000, guid: 630cbf70cb667434fb9a92c761d518d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 724332701}
-  background: {fileID: 1395440901}
+  ButtonColorList:
+  - {fileID: 690158992}
+  - {fileID: 598459720}
+  - {fileID: 1336266434}
+  - {fileID: 35326289}
+  BackgroundColorList:
+  - {fileID: 1395440901}
+  OutlineColorList:
+  - {fileID: 293804890}
+  TextColorList: []
   logger: {fileID: 618192123}
-  storageManager: {fileID: 443465450}
   colorblindCheckbox: {fileID: 458144390}
   windowedCheckbox: {fileID: 1997813638}
   boardColorsDropdown: {fileID: 690158991}
   uiColorsDropdown: {fileID: 598459719}
+  volumeSlider: {fileID: 1859519292}
 --- !u!4 &1786256294
 Transform:
   m_ObjectHideFlags: 0
@@ -5560,8 +5575,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1470505026}
-        m_TargetAssemblyTypeName: SoundMixerScript, Assembly-CSharp
+      - m_Target: {fileID: 2127314062}
+        m_TargetAssemblyTypeName: SettingsInputManager, Assembly-CSharp
         m_MethodName: SetVolume
         m_Mode: 0
         m_Arguments:
@@ -5759,8 +5774,8 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1786256293}
-        m_TargetAssemblyTypeName: SettingsUiManager, Assembly-CSharp
+      - m_Target: {fileID: 2127314062}
+        m_TargetAssemblyTypeName: SettingsInputManager, Assembly-CSharp
         m_MethodName: SwitchWindowedMode
         m_Mode: 0
         m_Arguments:
@@ -5883,6 +5898,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2053125619}
   m_CullTransparentMesh: 1
+--- !u!1 &2127314061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2127314063}
+  - component: {fileID: 2127314062}
+  m_Layer: 0
+  m_Name: Settings Input Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2127314062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127314061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02fffcb68b4d67847a13a64d7ef7d714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsUiManager: {fileID: 1786256293}
+--- !u!4 &2127314063
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127314061}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.991767, y: -0.46085474, z: -0.015277457}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -5891,6 +5951,7 @@ SceneRoots:
   - {fileID: 724332704}
   - {fileID: 1130394561}
   - {fileID: 1786256294}
-  - {fileID: 1470505025}
   - {fileID: 262679674}
   - {fileID: 443465451}
+  - {fileID: 1683820183}
+  - {fileID: 2127314063}

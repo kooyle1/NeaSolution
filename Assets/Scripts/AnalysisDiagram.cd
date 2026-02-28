@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AiController">
+    <Position X="10.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQRAAAAAAAAAAAAKEAAIAAAAAAAICAAAQAAAIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AiController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="bitboard" />
+      <Field Name="solver" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EasyAi" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.627" />
+  </Class>
+  <Class Name="MediumAi" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HardAi" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="ImpossibleAi" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AudioManager">
+    <Position X="15.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAABCAAAAAAgAAAAgBAAABAAACAAAAAAAACAEA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseUiManager">
+    <Position X="17" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAEAACAAACBgAKAAAAQGAAgAhABAAEBCA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\BaseUiManagerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BitboardManager">
+    <Position X="6.5" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgKACABgQAAQABQwKBBAgAAAgAAAAABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\BitboardManagerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoardManager">
+    <Position X="17.25" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIQAACBAECAGwAQCACAEAAIABAAAAAACIgAAggBiAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\BoardManagerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameConfig">
+    <Position X="13.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAABAAAAAAACAAAAAAAACAAAgCAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\GameConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameController">
+    <Position X="14.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAAACgAAAFCAAAAAABQAAAAAAACQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\GameController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="boardManager" />
+      <Field Name="bitboard" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GameState">
+    <Position X="11.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\GameState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger">
+    <Position X="24.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAo=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\LoggerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MatchState">
+    <Position X="10" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\MatchState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Solver">
+    <Position X="10.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAAAIACAAAAQQABBAAACAACQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\SolverScript.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="bitboard" />
+      <Field Name="transpositionTable" />
+      <Field Name="book" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TranspositionTable">
+    <Position X="6.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAABAAAIAAAAAAAAAAAAAQACAAQBAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\SolverScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpeningBook">
+    <Position X="9" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgCAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\SolverScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StorageManager">
+    <Position X="17.25" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAgAAIgBQAMAogAAAAAAAAADQEAAEIAIIAQAIAEA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\StorageManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalysisInputManager">
+    <Position X="13.75" Y="7.75" Width="2" />
+    <AssociationLine Name="bitboardManager" Type="BitboardManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.375" Y="10.781" />
+        <Point X="14.375" Y="12.153" />
+        <Point X="8.5" Y="12.153" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="gameController" Type="GameController" FixedFromPoint="true">
+      <Path>
+        <Point X="15.25" Y="10.781" />
+        <Point X="15.25" Y="13" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ACAASAAAAAAAAAAzAAAAAQAQEAAAAAAAIAQAIAABAAA=</HashCode>
+      <FileName>Assets\Scripts\Analysis Scene\AnalysisInputManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="aiController" />
+      <Field Name="analysisUiManager" />
+      <Field Name="bitboardManager" />
+      <Field Name="boardManager" />
+      <Field Name="gameController" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AnalysisUiManagerScript">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABCAAAAACAACAABAIAAABAgAAAAAAAAAAIAAACAAA4=</HashCode>
+      <FileName>Assets\Scripts\Analysis Scene\AnalysisUiManagerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="IAiStrategy">
+    <Position X="1.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Multi-Scene\AIStrategies.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
