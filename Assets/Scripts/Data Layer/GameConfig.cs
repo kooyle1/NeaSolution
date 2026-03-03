@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public static class GameConfig
 {
     public static int rows = 6;

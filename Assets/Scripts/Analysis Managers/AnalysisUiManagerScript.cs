@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class AnalysisUiManagerScript : BaseUiManager
 {
     [Header("Gameobject References")]
-    [SerializeField] private Button buttonExample;
+    [SerializeField] private Button buttonTemplate;
     [SerializeField] private GameObject scrollviewContent;
 
     [Header("Subclass Gameobject References")]
@@ -16,17 +16,17 @@ public class AnalysisUiManagerScript : BaseUiManager
     [SerializeField] private GameObject solutionObject;
     [SerializeField] private TMP_Text turnText;
 
-
     private List<TMP_Text> buttonTextList;
     private Dictionary<Button, Game> pastGamesDict;
 
     protected override void Start()
     {
-        buttonTextList = buttonExample.GetComponentsInChildren<TMP_Text>(true).ToList();
+        buttonTextList = buttonTemplate.GetComponentsInChildren<TMP_Text>(true).ToList();
         pastGamesDict = new Dictionary<Button, Game>();
-        List<Game> gamesInfoList = StorageManager.instance.LoadPastGames();
+        List<Game> gamesInfoList = StorageManager.instance.pastGames.gameList;
         gamesInfoList.Reverse();
 
+        //Instantiate a button object for each game and add it to the scroll view
         int index = gamesInfoList.Count - 1;
         foreach (Game game in gamesInfoList) {
             buttonTextList[0].text = (index + 1).ToString();
@@ -42,8 +42,7 @@ public class AnalysisUiManagerScript : BaseUiManager
             else {
                 buttonTextList[2].text = "Player 2 won";
             }
-
-            UpdateScrollView(buttonExample, game);
+            UpdateScrollView(buttonTemplate, game);
             index--;
 
         }
@@ -61,6 +60,9 @@ public class AnalysisUiManagerScript : BaseUiManager
         }
         else if (GameState.yellowWon) {
             turnText.text = "Current State: Yellow Won";
+        }
+        else if (GameState.isTie) {
+            turnText.text = "Current State: Tie";
         }
         else if (GameState.redTurn) {
             turnText.text = "Current State: Red Turn";
@@ -81,7 +83,7 @@ public class AnalysisUiManagerScript : BaseUiManager
     }
 
     /// <summary>
-    ///  Returns the game corresponding to the index. 
+    ///  Returns the game associated with the selected object. 
     /// </summary>
     public Game GetGameByIndex(GameObject obj)
     {
@@ -89,6 +91,9 @@ public class AnalysisUiManagerScript : BaseUiManager
         return pastGamesDict[button];
     }
 
+    /// <summary>
+    ///  Add a button object to the scroll view and add an entry to pastGamesDict.
+    /// </summary>
     private void UpdateScrollView(Button button, Game game)
     {
         Button newButton = Instantiate(button, scrollviewContent.transform);

@@ -14,9 +14,13 @@ public class GameInputManager : MonoBehaviour
 
     private void Start()
     {
-        gameController.ResetGame();       
+        gameController.ResetGame();
+        SetAiModeFalse();
     }
 
+    /// <summary>
+    ///  Updatse difficulty from the difficulty dropdown.
+    /// </summary>
     public void UpdateDifficulty(int index)
     {
         GameConfig.aiDifficulty = GameConfig.difficultyList[index];
@@ -52,6 +56,10 @@ public class GameInputManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    ///  Calls UI manager to update text displaying game state.
+    ///  Calls Game Controller to log game if game state is terminal.
+    /// </summary>
     public void UpdateState()
     {
         if (GameState.isTie) {
@@ -68,21 +76,37 @@ public class GameInputManager : MonoBehaviour
     }
 
     /// <summary>
-    ///  Set AI mode true/false.
+    ///  Set AI mode true and update UI manager.
     /// </summary>
-    public void SetAiMode(bool mode)
+    public void SetAiModeTrue()
     {
-        GameConfig.aiMode = mode;
+        GameConfig.aiMode = true;
         gameUiManager.ChangeModeText();
-        StartNewGame();
     }
 
     /// <summary>
-    ///  Set whether AI goes first true/false.
+    ///  Set AI mode false and update UI manager.
     /// </summary>
-    public void SetAiFirst(bool first)
+    public void SetAiModeFalse()
     {
-        GameConfig.aiFirst = first;
+        GameConfig.aiMode = false;
+        gameUiManager.ChangeModeText();
+    }
+
+    /// <summary>
+    ///  Set AI to go first.
+    /// </summary>
+    public void SetAiFirst()
+    {
+        GameConfig.aiFirst = true;
+    }
+
+    /// <summary>
+    ///  Set AI to go second.
+    /// </summary>
+    public void SetAiSecond()
+    {
+        GameConfig.aiFirst = false;
     }
 
     /// <summary>
@@ -105,13 +129,14 @@ public class GameInputManager : MonoBehaviour
 
 
     /// <summary>
-    ///  Reset board and turn and start the next round. Also saves this round's game to the past game list if game reached an end state.
+    ///  Reset board and turn and start the next round. Also saves this round's game to the past game list file if game reached an end state.
     /// </summary>
     public void StartNextRound()
     {       
         gameController.ResetGame();
         boardManager.CreateBoard();
         gameUiManager.DisableContinueButton();
+        aiController.StopSolving();
         UpdateState();
 
         if (GameConfig.aiFirst && GameConfig.aiMode) {
@@ -127,6 +152,7 @@ public class GameInputManager : MonoBehaviour
         StartNextRound();
         gameUiManager.ResetScores();
         gameUiManager.UpdateAiWarning();
+        gameUiManager.ChangeModeText();
 
     }
 }

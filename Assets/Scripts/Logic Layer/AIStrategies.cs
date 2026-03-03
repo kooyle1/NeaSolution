@@ -1,8 +1,9 @@
-using JetBrains.Annotations;
-using UnityEngine;
-
 public interface IAiStrategy
 {
+    /// <summary>
+    ///  Chooses a move from an array of scores. 
+    ///  The way the move is chosen depends on the strategy implementing this interface.
+    /// </summary>
     int ChooseMove(int[] scores);
 }
 

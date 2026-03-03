@@ -1,13 +1,14 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class DevInputManager : MonoBehaviour
 {
     [SerializeField] private DevUiManager uiManager;
     [SerializeField] private Solver solver;
-    
+
+    /// <summary>
+    ///  Solve each position in positionList and calculate the avg. time and avg. nodes explored then display results.
+    /// </summary>
     private void depthTest(List<(ulong, ulong)> positionList)
     {
         double totalTime = 0;
@@ -20,13 +21,14 @@ public class DevInputManager : MonoBehaviour
             ulong pos = position.Item1;
             ulong board = position.Item2;
             solver.ReturnScores(pos, board);
-            totalTime = solver.timeTaken;
+            totalTime += solver.timeTaken;
             totalNodes += solver.exploredNodes;
         }
 
         uiManager.SetAverage(totalTime / count, totalNodes / count);
     }
 
+    //Each function below simply defines a positionList then performs depthTest on the positions
     public void depth7Test()
     {
         List<(ulong, ulong)> positionList = new List<(ulong, ulong)> { (278921344, 34642870400), (22059220467712, 30889675325440), (44056576, 65028224), (287309826, 299892739), (4398314962945, 4432676798593), (4433748426752, 13299097796608),
@@ -48,11 +50,23 @@ public class DevInputManager : MonoBehaviour
                                                                     (43980475596805, 65970712346639), (3495985152, 4436447510528) };
         depthTest(positionList);
     }
+    public void depth12Test()
+    {
+        List<(ulong, ulong)> positionList = new List<(ulong, ulong)> { (1430257792, 36370923648), (22059220500608, 31027118522496), (4400735076608, 4440734056832), (184717953466410, 277076930199615), (724507295744, 5467231223808), (21990505201665, 30820960092289), (8831010603009, 30821555634177),
+            (34636596480, 4432689416064), (2728427520, 8386560000), (22059220467841, 31027112231041), };
+        depthTest(positionList);
+    }
 
     public void depth13Test()
     {
         List<(ulong, ulong)> positionList = new List<(ulong, ulong)> { (34940698624, 36370956416), (8796099379585, 13194414375811), (4468118781952, 4503019700224), (242944573440, 4642605940736),
             (815890688, 1910621056), (13194150068226, 13228782436739), (22024592294537, 30889673229199), (4776003633285, 31301721670023), (44090624, 132237184), (4467044941825, 4501945827457) };
+        depthTest(positionList);
+    }
+    public void depth14Test()
+    {
+        List<(ulong, ulong)> positionList = new List<(ulong, ulong)> { (5725225088, 42813374592), (8830459117952, 13229310985089), (184717953482794, 277076930216127), (173417709569, 4640458522625), (4434021187712, 4503019700352), (8797718315136, 13232540532865), (4467848167680, 4503019504001),
+            (44016167043073, 136444402221185), (71426916352, 244576206976), (343868015104, 515679306624), };
         depthTest(positionList);
     }
 
@@ -62,11 +76,23 @@ public class DevInputManager : MonoBehaviour
             (172075565696, 242412012416), (92463131787392, 277181890576513), (35976724481, 4503019569537), (34902999680, 4501945959296) };
         depthTest(positionList);
     }
+    public void depth16Test()
+    {
+        List<(ulong, ulong)> positionList = new List<(ulong, ulong)> { (114349479821333, 277111560486975), (8830991762050, 13298030396295), (4433501011969, 13299129303425), (37048500225, 4436464484481), (172071340545, 4639384686465), (92498294735105, 136583988658561), (344419516417, 1065988702593),
+            (8802279653376, 13451583864832), (44015372206210, 136374621585795), (4467839780224, 4640450070401), };
+        depthTest(positionList);
+    }
 
     public void depth17Test()
     {
         List<(ulong, ulong)> positionList = new List<(ulong, ulong)> { (37088477184, 38518898816), (344413274240, 519454310528), (105233072768, 4505167053697), (92393338585109, 277111560487103), (175292628993, 4642622783617), (36257693953, 4505183830401),
             (4879890317440, 13713576935552), (21992470315008, 30790484475904), (13195760697347, 13436551544963), (139362074752, 244676935808) };
+        depthTest(positionList);
+    }
+    public void depth18Test()
+    {
+        List<(ulong, ulong)> positionList = new List<(ulong, ulong)> { (5725356416, 42813604224), (22061638713344, 31030876815744), (184718221983786, 277077200847039), (8831807537665, 30891298636673), (4402891014147, 4440759320963), (4432687415811, 13299112723331), (34915584513, 38417846145),
+            (4398862501121, 13196083840897), (70602851200, 107137451904), (8902664061696, 13438699029377), };
         depthTest(positionList);
     }
 

@@ -12,7 +12,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Sprite redAltSprite;
     [SerializeField] Sprite defaultSprite;
 
-
     [Header("MonoBehaviour Script References")]
     [SerializeField] Logger logger;
 
@@ -22,11 +21,13 @@ public class BoardManager : MonoBehaviour
 
     public List<GameObject> columnList { get; private set; }
 
+    //Variables for storing raycast info from the mouse
     private GraphicRaycaster uiRaycaster;
     private PointerEventData pointerEventData;
     private List<RaycastResult> currentUiResults = new List<RaycastResult>();
     private RaycastResult[] prevUiResults;
 
+    //Variables for storing objects the mouse is hovering over
     private Button currentlyPreviewedSlot = null;
     private GameObject currentObject;
     private GameObject prevObject;
@@ -53,7 +54,7 @@ public class BoardManager : MonoBehaviour
     }
 
     /// <summary>
-    ///  Fills in the colour of the played slot (assuming given slot is the played slot).
+    ///  Fills in the coin at the bottom of the given column. Uses GameState to fill according to player turn.
     /// </summary>
     public void PlayMove(int columnIndex)
     {
@@ -61,21 +62,24 @@ public class BoardManager : MonoBehaviour
         Button slot = GetBottomSlot(column);
 
         if (GameState.redTurn) {
-            logger.Log($"Placed red coin in column {columnIndex}.");
-            slot.image.color = StorageManager.instance.settings.boardColors.fullRedColor;
+            slot.image.color = StorageManager.instance.boardColors.fullRedColor;
             if (StorageManager.instance.settings.symbolMode) {
-                slot.image.sprite = redAltSprite;
-            }    
+                slot.image.sprite = redAltSprite; //Swaps sprite if in colourblind mode
+            }
+            logger.Log($"Placed red coin in column {columnIndex}.");
         }
         else {
-            logger.Log($"Placed yellow coin in column {columnIndex}.");
-            slot.image.color = StorageManager.instance.settings.boardColors.fullYellowColor;
+            slot.image.color = StorageManager.instance.boardColors.fullYellowColor;
             if (StorageManager.instance.settings.symbolMode) {
-                slot.image.sprite = yellowAltSprite;
+                slot.image.sprite = yellowAltSprite; //Swaps sprite if in colourblind mode
             }
+            logger.Log($"Placed yellow coin in column {columnIndex}.");
         }
     }
 
+    /// <summary>
+    ///  Removes coin at the top of a column.
+    /// </summary>
     public void RemoveCoin(int columnIndex)
     {
         GameObject column = columnList[columnIndex];
@@ -83,16 +87,22 @@ public class BoardManager : MonoBehaviour
         slot.image.sprite = defaultSprite;
 
         logger.Log($"Removed coin in column {columnIndex}.");
-        slot.image.color = StorageManager.instance.settings.boardColors.buttonColor;
+        slot.image.color = StorageManager.instance.boardColors.buttonColor;
     }
 
+    /// <summary>
+    ///  Get the first empty slot in a column. 
+    ///  Set getFirstFilledSlot to true to get first filled slot in a column.
+    /// </summary>
     private Button GetBottomSlot(GameObject column, bool getFirstFilledSlot = false)
     {
         Color currentColor;
         Button targetButton = null;
+
+        //Loop through each slot in the column until the target slot is found.
         foreach (Transform child in column.transform) {
             currentColor = child.GetComponent<Button>().image.color;
-            if (currentColor == StorageManager.instance.settings.boardColors.fullRedColor || currentColor == StorageManager.instance.settings.boardColors.fullYellowColor) {
+            if (currentColor == StorageManager.instance.boardColors.fullRedColor || currentColor == StorageManager.instance.boardColors.fullYellowColor) {
                 if (getFirstFilledSlot) {
                     targetButton = child.GetComponent<Button>();
                 }
@@ -118,21 +128,32 @@ public class BoardManager : MonoBehaviour
         pointerEventData.position = mousePos;
 
         //Store previous frame results and get current frame results
-        prevUiResults = currentUiResults.ToArray();  
+        prevUiResults = currentUiResults.ToArray();
         currentUiResults.Clear();
         uiRaycaster.Raycast(pointerEventData, currentUiResults);
 
-        currentObject = currentUiResults.Count > 0 ? currentUiResults[0].gameObject : null;
-        prevObject = prevUiResults.Length > 0 ? prevUiResults[0].gameObject : null;
-        
+        if (currentUiResults.Count == 0) {
+            currentObject = null;
+        }
+        else {
+            currentObject = currentUiResults[0].gameObject;
+        }
+
+        if (prevUiResults.Length == 0) {
+            prevObject = null;
+        }
+        else {
+            prevObject = prevUiResults[0].gameObject;
+        }
+
         //Check if mouse is hovering over new object or nothing. If it is, make sure to stop previewing the move for the last selected slot.
         if (currentObject != prevObject || currentUiResults.Count == 0) {
             var currentSlotImage = currentlyPreviewedSlot?.image;
-            if (currentSlotImage && (currentSlotImage.color == StorageManager.instance.settings.boardColors.previewRedColor || currentSlotImage.color == StorageManager.instance.settings.boardColors.previewYellowColor)) {
+            if (currentSlotImage && (currentSlotImage.color == StorageManager.instance.boardColors.previewRedColor || currentSlotImage.color == StorageManager.instance.boardColors.previewYellowColor)) {
                 logger.LogFrame("Stopped previewing a move.");
-                currentSlotImage.color = StorageManager.instance.settings.boardColors.buttonColor;
+                currentSlotImage.color = StorageManager.instance.boardColors.buttonColor;
                 currentSlotImage.sprite = defaultSprite;
-            }             
+            }
             return;
         }
 
@@ -146,7 +167,7 @@ public class BoardManager : MonoBehaviour
         Sprite previewSprite;
 
         if (GameState.redTurn) {
-            previewColor = StorageManager.instance.settings.boardColors.previewRedColor;
+            previewColor = StorageManager.instance.boardColors.previewRedColor;
             if (StorageManager.instance.settings.symbolMode) {
                 previewSprite = redAltSprite;
             }
@@ -155,7 +176,7 @@ public class BoardManager : MonoBehaviour
             }
         }
         else {
-            previewColor = StorageManager.instance.settings.boardColors.previewYellowColor;
+            previewColor = StorageManager.instance.boardColors.previewYellowColor;
             if (StorageManager.instance.settings.symbolMode) {
                 previewSprite = yellowAltSprite;
             }
@@ -171,7 +192,7 @@ public class BoardManager : MonoBehaviour
         //Loop through each button in the column, and stop once a played move is reached. Store the last empty slot before breaking.
         foreach (Transform child in parent) {
             currentColor = child.GetComponent<Button>().image.color;
-            if (currentColor == StorageManager.instance.settings.boardColors.fullRedColor || currentColor == StorageManager.instance.settings.boardColors.fullYellowColor)
+            if (currentColor == StorageManager.instance.boardColors.fullRedColor || currentColor == StorageManager.instance.boardColors.fullYellowColor)
                 break;
             targetButton = child.GetComponent<Button>();
         }
@@ -187,16 +208,6 @@ public class BoardManager : MonoBehaviour
         logger.LogFrame("Attempted to preview a move in a full column");
     }
 
-    public void UpdateRowCount(int rows)
-    {
-        GameConfig.rows = rows + 6;
-    }
-
-    public void UpdateColumnCount(int cols)
-    {
-        GameConfig.cols = cols + 6;
-    }
-
     /// <summary>
     ///  Instantiates buttons in a grid that fits inside the board. Buttons are instantiated into columns as children from top to down (so highest button is first and lowest is last). Also destroys old board buttons.
     /// </summary>
@@ -207,8 +218,9 @@ public class BoardManager : MonoBehaviour
 
         //Destroy old buttons for recreating
         foreach (GameObject col in columnList) {
-            foreach (Transform child in col.transform)
+            foreach (Transform child in col.transform) {
                 Destroy(child.gameObject);
+            }
         }
 
         //Calculate and set new button diameter
@@ -220,20 +232,17 @@ public class BoardManager : MonoBehaviour
         //Create start position using position of top left corner of board
 
         // Starting position (top-left corner)
-        Vector2 startPos = new Vector2(
-            boardTransform.rect.xMin - widthDiameter,
-            boardTransform.rect.yMax 
-        );
+        Vector2 startPos = new Vector2(boardTransform.rect.xMin - widthDiameter, boardTransform.rect.yMax);
 
         //Instantiate columns of buttons from the start position
         Transform column;
-        for (int i = 0; i < GameConfig.cols;  i++) {
-            startPos.x += widthDiameter + padding/ GameConfig.cols;
+        for (int i = 0; i < GameConfig.cols; i++) {
+            startPos.x += widthDiameter + padding / GameConfig.cols;
             startPos.y = boardTransform.rect.yMax;
-            column = columnList[i].transform;  
+            column = columnList[i].transform;
 
             for (int j = 0; j < GameConfig.rows; j++) {
-                startPos.y -= heightDiameter + padding/ GameConfig.rows;
+                startPos.y -= heightDiameter + padding / GameConfig.rows;
                 Instantiate(button, startPos, Quaternion.identity).transform.SetParent(column, false);
             }
         }
@@ -245,7 +254,7 @@ public class BoardManager : MonoBehaviour
     /// </summary>
     public void SetBoardColors()
     {
-        BoardColors boardColors = StorageManager.instance.settings.boardColors;
+        BoardColors boardColors = StorageManager.instance.boardColors;
 
         board.color = boardColors.boardColor;
         board.GetComponent<Outline>().effectColor = boardColors.boardOutlineColor;

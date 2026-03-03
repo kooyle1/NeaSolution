@@ -11,10 +11,15 @@ public class SettingsInputManager : MonoBehaviour
         StorageManager.instance.ChangeSetting(s => s.volume = volume);
     }
 
-    public void SwitchWindowedMode(bool mode)
+    public void SwitchWindowedMode(bool windowed)
     {
-        settingsUiManager.SetWindowed(mode);
-        StorageManager.instance.ChangeSetting(s => s.windowedMode = mode);
+        if (windowed) {
+            settingsUiManager.SetWindowed();
+        }
+        else {
+            settingsUiManager.SetFullscreen();
+        }
+        StorageManager.instance.ChangeSetting(s => s.windowedMode = windowed);
     }
 
     public void SwitchColorblindMode(bool mode)
@@ -24,11 +29,11 @@ public class SettingsInputManager : MonoBehaviour
 
     public void ChangeUiTheme(int index)
     {
-        StorageManager.instance.ChangeSetting(s => s.uiColors = StorageManager.instance.uiColorsList[index]);
+        StorageManager.instance.ChangeSetting(s => s.uiColorsIndex = index);
     }
 
     public void ChangeBoardTheme(int index)
     {
-        StorageManager.instance.ChangeSetting(s => s.boardColors = StorageManager.instance.boardColorsList[index]);
+        StorageManager.instance.ChangeSetting(s => s.boardColorsIndex = index);
     }
 }

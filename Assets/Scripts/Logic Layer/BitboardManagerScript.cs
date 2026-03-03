@@ -7,17 +7,9 @@ public class BitboardManager : MonoBehaviour
     private ulong fullBoard = 0UL;
     private ulong tieCheckMask;
 
-    private string list = "{";
-
     private void Start()
     {
         UpdateTieCheckMask();
-    }
-
-    public void AddPosBoard()
-    {
-        list += $"({currentPosition}, {fullBoard}), ";
-        Debug.Log(list);
     }
 
     /// <summary>
@@ -150,14 +142,8 @@ public class BitboardManager : MonoBehaviour
     /// </summary>
     public void PlayMove(int column)
     {
-        //  Debug.Log($"Board before: {fullBoard}");
-        //  Debug.Log($"Pos before: {currentPosition}");
-
         fullBoard |= fullBoard + (1UL << (column * (GameConfig.rows + 1)));
         currentPosition ^= fullBoard;
-
-        //Debug.Log($"Board after: {fullBoard}");
-       // Debug.Log($"Pos after: {currentPosition}");
     }
 
     /// <summary>
@@ -198,15 +184,13 @@ public class BitboardManager : MonoBehaviour
         return CheckWin(newPos);
     }
 
+    //NOT MY CODE BELOW THIS COMMENT
     private ulong ColumnMask(int col)
     {
         return ((1UL << (GameConfig.rows + 1)) - 1)
                << (col * (GameConfig.rows + 1));
     }
 
-    /// <summary>
-    ///   Return key for the opening book.
-    /// </summary>
     public ulong GetKey(ulong pos, ulong board)
     {
         pos ^= board;
@@ -249,3 +233,5 @@ public class BitboardManager : MonoBehaviour
     }
 
 }
+
+

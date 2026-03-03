@@ -16,6 +16,9 @@ public class AnalysisInputManager : MonoBehaviour
     private int[] currentMoveList;
     private int index = -1;
 
+    /// <summary>
+    ///  Gets game info from selected game and prepares the game replay screen.
+    /// </summary>
     public void OpenGameReplay()
     {
         GetGame();
@@ -26,6 +29,9 @@ public class AnalysisInputManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    ///  Get game associated with currently selected game object.
+    /// </summary>
     private void GetGame()
     {
         Game currentGame = analysisUiManager.GetGameByIndex(EventSystem.current.currentSelectedGameObject);
@@ -40,6 +46,7 @@ public class AnalysisInputManager : MonoBehaviour
         if (index >= currentMoveList.Length - 1) {
             return;
         }
+        aiController.StopSolving();
         index++;
         gameController.TryMakeMove(currentMoveList[index]);
         analysisUiManager.UpdateTurnIndicator();
@@ -50,12 +57,16 @@ public class AnalysisInputManager : MonoBehaviour
         if (index < 0) {
             return;
         }
+        aiController.StopSolving();
         gameController.TryUndoMove(currentMoveList[index]);
         analysisUiManager.UpdateTurnIndicator();
         index--;
 
     }
 
+    /// <summary>
+    ///  Calls AI controller to solve position, then calls move rater to give a rating.
+    /// </summary>
     public void ShowSolution()
     {
         string rating;
@@ -67,7 +78,7 @@ public class AnalysisInputManager : MonoBehaviour
             return;
         }
         
-        if (GameState.redWon || GameState.yellowWon) {
+        if (GameState.redWon || GameState.yellowWon || GameState.isTie) {
             rating = "Solution not available, game ended.";
             analysisUiManager.DisplaySolution(bestMove, rating);
             return;
@@ -87,7 +98,7 @@ public class AnalysisInputManager : MonoBehaviour
 
         int playedMove = currentMoveList[index];
         bitboardManager.UndoMove(playedMove);
-        aiController.StartSolving(bitboardManager.GetPos(), bitboardManager.GetBoard(), scores => {
+        aiController.StartSolving(scores => {
             logger.Log("Unsorted Scores: {" + String.Join(", ", scores) + "}");
             int bestMove = aiController.ReturnBestMove(scores);
             string rating = moveRater.ReturnRating(playedMove, scores);

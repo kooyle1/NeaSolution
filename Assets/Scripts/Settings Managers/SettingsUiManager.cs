@@ -4,6 +4,7 @@ using TMPro;
 
 public class SettingsUiManager : BaseUiManager
 {
+    [Header("Subclass Gameobject References")]
     [SerializeField] Toggle colorblindCheckbox;
     [SerializeField] Toggle windowedCheckbox;
     [SerializeField] TMP_Dropdown boardColorsDropdown;
@@ -14,12 +15,13 @@ public class SettingsUiManager : BaseUiManager
     {
         base.Start();
 
+        //Set value of all UI objects to their value in settings
         Settings settings = StorageManager.instance.settings;
-        volumeSlider.value = settings.volume;
+        volumeSlider.value = settings.volume; 
         windowedCheckbox.isOn = settings.windowedMode;
         colorblindCheckbox.isOn = settings.symbolMode;  
-        boardColorsDropdown.value = StorageManager.instance.boardColorsList.IndexOf(settings.boardColors);
-        uiColorsDropdown.value = StorageManager.instance.uiColorsList.IndexOf(settings.uiColors);
+        boardColorsDropdown.value = settings.boardColorsIndex;
+        uiColorsDropdown.value = settings.uiColorsIndex;
     }
 
 }

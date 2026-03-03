@@ -1,7 +1,6 @@
 using System.IO;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 using System.Threading.Tasks;
 
@@ -10,12 +9,15 @@ public class StorageManager : MonoBehaviour
     public static StorageManager instance { get; private set; }
     
     [SerializeField] Settings defaultSettings;
-    [SerializeField] public List<BoardColors> boardColorsList;
-    [SerializeField] public  List<UiColors> uiColorsList;
+    [SerializeField] private List<BoardColors> boardColorsList;
+    [SerializeField] private List<UiColors> uiColorsList;
 
-    private PastGames pastGames = new PastGames();
     public Settings settings { get; private set; }
+    public BoardColors boardColors { get; private set; }
+    public UiColors uiColors { get; private set; }
+    public PastGames pastGames { get; private set; } = new PastGames();    
 
+    //Variables for loading opening book via multithreading
     private Dictionary<ulong, sbyte> openingBook;
     private Task<Dictionary<ulong, sbyte>> currentTask;
     private Action<Dictionary<ulong, sbyte>> callback;
@@ -23,6 +25,35 @@ public class StorageManager : MonoBehaviour
 
     private string pastGamesFile;
     private string settingsFile;
+
+    private void Awake()
+    {
+        if (instance == null) {
+            instance = this;
+        }
+
+        else {
+            Destroy(gameObject);
+            return;
+        }
+
+        pastGamesFile = Path.Combine(Application.persistentDataPath, "PastGames.json");
+        settingsFile = Path.Combine(Application.persistentDataPath, "Settings.json");
+
+        if (!CanRunFunction(LoadSettings)) {
+            instance.settings = defaultSettings;
+            SaveSettings(); //Go back to default settings if there is an error 
+        }
+        else {
+            settings = LoadSettings();
+        }
+        if (!CanRunFunction(LoadPastGames)) {
+            SavePastGames(); //Empty past games file if there is an error
+        }
+        else {
+            pastGames.gameList = LoadPastGames();
+        }
+    }
 
     private void Update()
     {
@@ -37,15 +68,25 @@ public class StorageManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  Load book from the book12.bin file.
+    ///  Loading is performed on a background thread so as to not clog up the main thread.
+    /// </summary>
     public void LoadBook(Action<Dictionary<ulong, sbyte>> onTaskFinished)
     {
         string path = Path.Combine(Application.streamingAssetsPath, "book12.bin");
-
+        if (currentTask != null) {
+            return;
+        }
         isLoading = true;
         callback = onTaskFinished;
         currentTask = Task.Run(() => LoadBinary(path));
     }
 
+
+    /// <summary>
+    ///  Create an opening book binary file from csv file.
+    /// </summary>
     private void SaveBinary(string binaryPath)
     {
         using (BinaryWriter writer = new BinaryWriter(File.Open(binaryPath, FileMode.Create))) {
@@ -58,6 +99,9 @@ public class StorageManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  Load opening book from csv file.
+    /// </summary>
     private void LoadCSV(string path)
     {
         foreach (var line in File.ReadLines(path)) {
@@ -72,14 +116,18 @@ public class StorageManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///  Load opening book from binary file.
+    /// </summary>
     private Dictionary<ulong, sbyte> LoadBinary(string binaryPath)
     {
         if (openingBook != null) {
             return openingBook;
         }
         openingBook = new Dictionary<ulong, sbyte>();
+        FileStream stream = new FileStream(binaryPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
-        using (BinaryReader reader = new BinaryReader(File.Open(binaryPath, FileMode.Open))) {
+        using (BinaryReader reader = new BinaryReader(stream)) {
             int count = reader.ReadInt32();
 
             openingBook = new Dictionary<ulong, sbyte>(count);
@@ -92,49 +140,7 @@ public class StorageManager : MonoBehaviour
         }
 
         return openingBook;
-    }
-
-    private void Awake()
-    {
-        if (instance == null) {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
-        else {
-            Destroy(gameObject);
-        }
-
-        pastGamesFile = Path.Combine(Application.persistentDataPath, "PastGames.json");
-        settingsFile = Path.Combine(Application.persistentDataPath, "Settings.json");
-
-        bool settingsIssue = false;
-        
-        if (!CanRunFunction(LoadSettings)) {
-            settingsIssue = true;
-        }
-        else {
-            var s = LoadSettings();
-
-            bool allNonNullRefs =
-                s.GetType()
-                 .GetFields(System.Reflection.BindingFlags.Public)
-                 .Where(f => !f.FieldType.IsValueType)   
-                 .All(f => f.GetValue(s) != null);
-            if (!allNonNullRefs) {
-                settingsIssue = true;
-            }
-        }
-
-        if (settingsIssue) {
-            settings = defaultSettings;
-            SaveSettings();
-        }
-        if (!CanRunFunction(LoadPastGames)) {
-            SavePastGames();
-        }
-        settings = LoadSettings();
-    }
+    }   
 
     /// <summary>
     ///  Returns false if function throws an exception. Returns true if function runs without issue.
@@ -155,7 +161,6 @@ public class StorageManager : MonoBehaviour
     /// </summary>
     public void ChangeSetting(Action<Settings> update)
     {
-        settings = LoadSettings();
         update(settings);
         SaveSettings();
     }
@@ -167,8 +172,8 @@ public class StorageManager : MonoBehaviour
     {
         string settingsData = File.ReadAllText(settingsFile);
         Settings settings = JsonUtility.FromJson<Settings>(settingsData);
-        settings.boardColors = boardColorsList[settings.boardColorsIndex];
-        settings.uiColors = uiColorsList[settings.uiColorsIndex];
+        boardColors = boardColorsList[settings.boardColorsIndex];
+        uiColors = uiColorsList[settings.uiColorsIndex];
 
         return settings;    
     }
@@ -178,8 +183,8 @@ public class StorageManager : MonoBehaviour
     /// </summary>
     private void SaveSettings()
     {
-        settings.boardColorsIndex = boardColorsList.IndexOf(settings.boardColors);
-        settings.uiColorsIndex = uiColorsList.IndexOf(settings.uiColors);
+        boardColors = boardColorsList[settings.boardColorsIndex];
+        uiColors = uiColorsList[settings.uiColorsIndex];
         string settingsData = JsonUtility.ToJson(settings);
         File.WriteAllText(settingsFile, settingsData);
     }
@@ -189,6 +194,10 @@ public class StorageManager : MonoBehaviour
     /// </summary>
     public void SaveGame(Game game)
     {
+        if (!CanRunFunction(LoadPastGames)) {
+            pastGames = new PastGames();
+            SavePastGames();
+        }
         pastGames.gameList = LoadPastGames();
         pastGames.gameList.Add(game);
         SavePastGames();
@@ -211,9 +220,7 @@ public class StorageManager : MonoBehaviour
         string pastGamesData = File.ReadAllText(pastGamesFile);
         List<Game> games = JsonUtility.FromJson<PastGames>(pastGamesData).gameList;
         return games;
-
     }
-
 }
 
 [System.Serializable]
@@ -241,6 +248,4 @@ public class Settings
     public bool windowedMode;
     public int boardColorsIndex;
     public int uiColorsIndex;
-    public BoardColors boardColors;
-    public UiColors uiColors;
 }

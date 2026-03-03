@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AudioManager">
+    <Position X="15.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAABCAAAAAAgAAAAgBAAABAAACAAAAAAAACAEA=</HashCode>
+      <FileName>Assets\Scripts\Logic Layer\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameConfig">
+    <Position X="13.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAABAAAAAAACAAAAAAAACAAAgCAA=</HashCode>
+      <FileName>Assets\Scripts\Data Layer\GameConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameState">
+    <Position X="11.75" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Data Layer\GameState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger">
+    <Position X="24.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAgAAAAAAAAAAAAAAAo=</HashCode>
+      <FileName>Assets\Scripts\Data Layer\LoggerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MatchState">
+    <Position X="10" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data Layer\MatchState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StorageManager">
+    <Position X="17.25" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAgAAIgBQANAogAAAAAAAAADQEAAEKAIIAQAIAEA=</HashCode>
+      <FileName>Assets\Scripts\Data Layer\StorageManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DevInputManager">
+    <Position X="12" Y="8" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgEAAAQAgAAIAAAAkAAAACACAAAAAEAAgIAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Dev Managers\DevInputManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="uiManager" />
+      <Field Name="solver" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DevUiManager">
+    <Position X="12.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Assets\Scripts\Dev Managers\DevUiManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseUiManager">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAEAACAAACBgAKAAAAQGAAgAhABACEBCA=</HashCode>
+      <FileName>Assets\Scripts\Logic Layer\BaseUiManagerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Solver">
+    <Position X="8.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACSAAgIACAACAQQABJAAACAACQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Logic Layer\SolverScript.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="bitboard" />
+      <Field Name="book" />
+      <Field Name="transpositionTable" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BitboardManager">
+    <Position X="3.25" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgKACABgQAAQABQwKBBAgAAAgAAAAABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Logic Layer\BitboardManagerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OpeningBook">
+    <Position X="8.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgCAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Logic Layer\SolverScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TranspositionTable">
+    <Position X="6.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAABAAAIAAAAAAAAAAAAAAACAAQBAAAA=</HashCode>
+      <FileName>Assets\Scripts\Logic Layer\SolverScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

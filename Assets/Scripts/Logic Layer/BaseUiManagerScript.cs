@@ -28,7 +28,12 @@ public abstract class BaseUiManager : MonoBehaviour
     /// </summary>
     protected virtual void Start()
     {
-        SetWindowed(StorageManager.instance.settings.windowedMode);
+        if (StorageManager.instance.settings.windowedMode) {
+            SetWindowed();
+        }
+        else {
+            SetFullscreen();
+        }
         
         buttonList = canvas.GetComponentsInChildren<Button>(true).ToList();
         foreach (Button button in buttonList) {
@@ -50,8 +55,7 @@ public abstract class BaseUiManager : MonoBehaviour
     /// </summary>
     public virtual void SetColors()
     {
-        UiColors uiColors = StorageManager.instance.settings.uiColors;
-        
+        UiColors uiColors = StorageManager.instance.uiColors;
         foreach (Image img in ButtonColorList) {
             img.color = uiColors.buttonColor;
         }
@@ -77,22 +81,27 @@ public abstract class BaseUiManager : MonoBehaviour
         
     }
 
-    public void SetWindowed(bool windowed)
+    /// <summary>
+    ///  Sets screen to windowed mode. Sets window resolution to 1280, 720 if in fullscreen.
+    /// </summary>
+    public void SetWindowed()
     {
-        if (windowed && !StorageManager.instance.settings.windowedMode) {
+        if (!StorageManager.instance.settings.windowedMode) {
             Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
         }
-        else if (windowed) {
+        else {
             Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.Windowed);
         }
-        else {
-            Screen.SetResolution(
-            Screen.currentResolution.width,
-            Screen.currentResolution.height,
-            FullScreenMode.FullScreenWindow
-        );
-        }
     }
+
+    /// <summary>
+    ///  Sets screen to fullscreen mode.
+    /// </summary>
+    public void SetFullscreen()
+    {
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, FullScreenMode.FullScreenWindow);
+    }
+
     public void EnableObject(GameObject uiObject)
     {
         logger.Log($"Enabled '{uiObject.name}'.");

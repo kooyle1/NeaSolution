@@ -7,9 +7,12 @@ public class DevUiManager : BaseUiManager
 
     protected override void Start()
     {
-        return;
+        return; //No need to update UI since users cant access this scene
     }
 
+    /// <summary>
+    ///  Displays inputted average time and nodes.
+    /// </summary>
     public void SetAverage(double time, int nodes)
     {
         string text = $"AVERAGE TIME(ms): {time.ToString()}, AVERAGE EXPLORED NODES: {nodes.ToString()} ";

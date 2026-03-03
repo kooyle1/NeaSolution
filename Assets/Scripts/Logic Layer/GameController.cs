@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [Header("Monobehaviour Script References")]
     [SerializeField] private BoardManager boardManager;
     [SerializeField] private BitboardManager bitboard;
     [SerializeField] private Logger logger;
@@ -14,6 +15,9 @@ public class GameController : MonoBehaviour
         movesMade = new List<int>();
     }
 
+    /// <summary>
+    ///   Tries to place a coin in the game board in the given column. Returns false if it failed.
+    /// </summary>
     public bool TryMakeMove(int columnIndex)
     {
         if (GameState.yellowWon || GameState.redWon || GameState.isTie || !bitboard.CanPlayColumn(columnIndex)) {
@@ -25,6 +29,9 @@ public class GameController : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    ///   Tries to remove a coin in the game board in the given column. Returns false if it failed.
+    /// </summary>
     public void TryUndoMove(int columnIndex)
     {
         if (movesMade.Count == 0 || movesMade[^1] != columnIndex) {
@@ -42,6 +49,9 @@ public class GameController : MonoBehaviour
         movesMade.RemoveAt(movesMade.Count - 1);    
     }
 
+    /// <summary>
+    ///   Resets: GameState variables, bitboard, list storing played moves.
+    /// </summary>
     public void ResetGame()
     {
         GameState.redTurn = true;
@@ -53,12 +63,14 @@ public class GameController : MonoBehaviour
         bitboard.UpdateTieCheckMask();
         movesMade.Clear();
     }
+
+    /// <summary>
+    ///   Places coin in both physical game board and bitboard assuming the move is legal.
+    ///   Also evaluates the game state and checks whether game has ended then swaps turn.
+    ///   Then adds the move to movesMade.
+    /// </summary>
     private void ApplyMove(int columnIndex)
     {
-        if (!bitboard.CanPlayColumn(columnIndex)) {
-            logger.Log("Player tried moving in a full column.");
-            return;
-        }
         AudioManager.instance.PlayMoveSFX(); //Play SFX
         bitboard.PlayMove(columnIndex); //Play move in the bitboard
         boardManager.PlayMove(columnIndex); //Place coin in the board
@@ -70,6 +82,10 @@ public class GameController : MonoBehaviour
         movesMade.Add(columnIndex);
     }
 
+    /// <summary>
+    ///   Uses bitboard to check if a win or tie occurred.
+    ///   Changes game state accordingly (does not swap turn).
+    /// </summary>
     private void EvaluateGameState()
     {
         //Assume player won before actually checking to avoid nested ifs in CheckWin    
@@ -82,6 +98,7 @@ public class GameController : MonoBehaviour
 
         //Change GameState based on current game state
         if (bitboard.CheckWin()) {
+            GameState.isTie = false;    
             logger.Log($"A win occured on this turn.");
         }
         else if (bitboard.CheckTie()) {
@@ -92,13 +109,18 @@ public class GameController : MonoBehaviour
         }
         else {
             logger.Log("Game did not end, now other player's turn.");
+            GameState.isTie = false;
             GameState.redWon = false;
             GameState.yellowWon = false;
         }
     }
 
+    /// <summary>
+    ///   Calls the storage manager to store the played game.
+    /// </summary>
     public void LogGame()
     {
+        //Record gamemode into a string
         string mode = "";
         if (!GameConfig.aiMode) {
             mode = "2-player";
@@ -114,6 +136,7 @@ public class GameController : MonoBehaviour
             mode += "(" + GameConfig.aiDifficulty + ")";
         }
 
+        //Create a new Game object using GameState and GameConfig
         Game playedGame = new Game
         {
             moveList = movesMade,

@@ -12,6 +12,9 @@ public class GameUiManager : BaseUiManager
     [SerializeField] private TMP_Text aiLoadingText;
     [SerializeField] private GameObject continueButton;
 
+    private int newRowCount = 6;
+    private int newColCount = 7;
+
     private void Update()
     {
         if (StorageManager.instance.isLoading) {
@@ -20,6 +23,9 @@ public class GameUiManager : BaseUiManager
         base.DisableObject(aiLoadingText.gameObject);
     }
 
+    /// <summary>
+    ///  Displays warning that AI is not available if board size is not 6x7 or opening book is loading.
+    /// </summary>
     public void UpdateAiWarning()
     {
         if (GameConfig.rows != 6 || GameConfig.cols != 7) {
@@ -30,13 +36,19 @@ public class GameUiManager : BaseUiManager
         }
     }
 
-    public void EnableAiMode(GameObject aiSelect)
+    /// <summary>
+    ///  Only enables inputted AI window object if board size is 6x7 and opening book has stopped loading.
+    /// </summary>
+    public void EnableAiWindow(GameObject aiSelect)
     {
         if (GameConfig.rows == 6 && GameConfig.cols == 7 && !StorageManager.instance.isLoading) {
             base.EnableObject(aiSelect);
         }
     }
 
+    /// <summary>
+    ///  Only enables inputted Forfeit window object if game hasn't ended.
+    /// </summary>
     public void EnableForfeit(GameObject forfeitOption)
     {
         if (!(GameState.yellowWon || GameState.redWon || GameState.isTie)) {
@@ -45,7 +57,7 @@ public class GameUiManager : BaseUiManager
     }
 
     /// <summary>
-    ///  Updates the turn indicator text based on who's turn it is.
+    ///  Updates the turn indicator text based on who's turn it is using GameConfig and GameState.
     /// </summary>
     public void UpdateTurnIndicator()
     {
@@ -64,6 +76,9 @@ public class GameUiManager : BaseUiManager
         }
     }
 
+    /// <summary>
+    ///  Updates text displaying mode using GameConfig.
+    /// </summary>
     public void ChangeModeText()
     {    
         if (GameConfig.aiMode) {
@@ -74,6 +89,7 @@ public class GameUiManager : BaseUiManager
             else {
                 gamemodeText.text +=  "Ai Second";
             }
+            gamemodeText.text += $"\n({GameConfig.aiDifficulty})";
         }
         else {
             gamemodeText.text = "2-Player";
@@ -81,7 +97,8 @@ public class GameUiManager : BaseUiManager
     }
 
     /// <summary>
-    ///  Updates the turn indicator text to display who just won.
+    ///  Updates the turn indicator text to display who just won using GameState.
+    ///  Also increments winning player's score using MatchState.
     /// </summary>
     public void DisplayWin()
     {
@@ -103,11 +120,6 @@ public class GameUiManager : BaseUiManager
     public void DisplayTie()
     {
         turnText.text = "TIE!!"; UpdateRedScore(); UpdateYellowScore();
-        Debug.
-            Log(
-            "hi"
-
-            );
         EnableContinueButton();
     }
 
@@ -127,16 +139,49 @@ public class GameUiManager : BaseUiManager
     private void UpdateYellowScore()
     {
         MatchState.yellowPoints++;
+        Debug.Log(MatchState.yellowPoints);
         int score = MatchState.yellowPoints;
         yellowScoreText.text = score.ToString();
     }
 
+    /// <summary>
+    ///  Reset both player's scores and update UI.
+    /// </summary>
     public void ResetScores()
     {
         MatchState.redPoints = 0;
         MatchState.yellowPoints = 0;
         redScoreText.text = 0.ToString();
         yellowScoreText.text = 0.ToString();
+    }
+
+    /// <summary>
+    ///  Update row count from dropdown. Does not apply to GameConfig until confirm is pressed.
+    /// </summary>
+    public void UpdateRowCount(int index)
+    {
+        newRowCount = index + 6;
+    }
+
+    /// <summary>
+    ///  Update column count from dropdown. Does not apply to GameConfig until confirm is pressed.
+    /// </summary>
+    public void UpdateColumnCount(int index)
+    {
+        newColCount = index + 6;
+    }
+
+    /// <summary>
+    ///  Applies any changes to col/row count to GameConfig.
+    /// </summary>
+    public void ConfirmBoardUpdate()
+    {
+        GameConfig.rows = newRowCount;
+        GameConfig.cols = newColCount;
+
+        if (newRowCount != 6 || newColCount != 7) {
+            GameConfig.aiMode = false;
+        }
     }
 
     public void EnableContinueButton()
